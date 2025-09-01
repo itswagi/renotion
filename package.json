@@ -1,6 +1,6 @@
 {
   "name": "@devable/renotion",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Notion style viewer and editor for markdown",
   "keywords": [
     "devable",
