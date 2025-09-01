@@ -1,5 +1,5 @@
 {
-  "name": "@devable/renotion",
+  "name": "renotion",
   "version": "1.0.1",
   "description": "A Notion style viewer and editor for markdown",
   "keywords": [
@@ -9,7 +9,7 @@
     "editor",
     "viewer"
   ],
-  "homepage": "https://github.com/mattpocock/tt-package-demo",
+  "homepage": "https://github.com/itswagi/renotion",
   "bugs": {
     "url": "https://github.com/itswagi/renotion/issues"
   },
@@ -39,5 +39,8 @@
     "dev": "vitest",
     "local-release": "changeset version && changeset publish",
     "prepublishOnly": "npm run ci"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
