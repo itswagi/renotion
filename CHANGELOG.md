@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.1.1
+
+### Patch Changes
+
+- b81e48c: updated readme
+
 ## 1.1.0
 
 ### Minor Changes
