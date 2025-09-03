@@ -1,1 +1,1 @@
-export { add } from './utils.js';
+export { Renotion } from './Editor.js';
