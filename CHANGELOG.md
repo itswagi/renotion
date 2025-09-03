@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.1.2
+
+### Patch Changes
+
+- b190257: updated docs
+
 ## 1.1.1
 
 ### Patch Changes
