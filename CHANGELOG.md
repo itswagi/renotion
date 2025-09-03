@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.1.0
+
+### Minor Changes
+
+- 2e0f377: added working editor
+
 ## 1.0.1
 
 ### Patch Changes
