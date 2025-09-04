@@ -1,0 +1,5 @@
+---
+'renotion': patch
+---
+
+added types
