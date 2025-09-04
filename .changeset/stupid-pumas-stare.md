@@ -1,5 +1,0 @@
----
-'renotion': patch
----
-
-fixed icons

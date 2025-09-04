@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.2
+
+### Patch Changes
+
+- 964b8c5: fixed icons
+
 ## 1.2.1
 
 ### Patch Changes
