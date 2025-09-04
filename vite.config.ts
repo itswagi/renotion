@@ -1,11 +1,11 @@
 /// <reference types="vitest/config" />
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import dts from 'vite-plugin-dts';
-import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { fileURLToPath } from 'url';
+import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig(({ command }) => {
   if (command === 'serve') {
@@ -15,7 +15,12 @@ export default defineConfig(({ command }) => {
       root: 'playground', // use playground folder as root
       resolve: {
         alias: {
-          renotion: path.resolve(__dirname, 'src'), // alias to source code
+          'lucide-react/icons': fileURLToPath(
+            new URL(
+              './node_modules/lucide-react/dist/esm/icons',
+              import.meta.url,
+            ),
+          ),
         },
       },
       test: {
@@ -65,6 +70,16 @@ export default defineConfig(({ command }) => {
             'react-dom': 'ReactDOM',
           },
         },
+      },
+    },
+    resolve: {
+      alias: {
+        'lucide-react/icons': fileURLToPath(
+          new URL(
+            './node_modules/lucide-react/dist/esm/icons',
+            import.meta.url,
+          ),
+        ),
       },
     },
   };

@@ -120,7 +120,7 @@ export const Renotion: React.FC<RenotionProps> = ({ markdown, onChange }) => {
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
     >
-      <div className="editor--wrapper relative">
+      <div className="editor--wrapper relative p-20">
         <SortableContext
           items={flattenedIds}
           strategy={verticalListSortingStrategy}

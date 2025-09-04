@@ -17,7 +17,7 @@ import {
   Minus,
   Settings,
   Type,
-} from 'lucide-react';
+} from 'lucide-react/icons';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { getHoverManager } from '../lib';
