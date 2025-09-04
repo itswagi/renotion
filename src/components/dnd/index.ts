@@ -1,2 +1,2 @@
-export * from './DragOverlayItem.jsx';
-export * from './SortableItem.jsx';
+export * from './DragOverlayItem';
+export * from './SortableItem';

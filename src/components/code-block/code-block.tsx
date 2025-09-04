@@ -1,8 +1,8 @@
 import hljs from 'highlight.js/lib/common';
 import 'highlight.js/styles/atom-one-dark.css'; // Import a default style for syntax highlighting
 import { Highlight, themes } from 'prism-react-renderer';
-import { highlightToPrismMap } from './constants.js';
-import type { CodeBlockProps } from './types.js';
+import { highlightToPrismMap } from './constants';
+import type { CodeBlockProps } from './types';
 
 export default function CodeBlock({ code, language, caption }: CodeBlockProps) {
   // Detect language if not provided

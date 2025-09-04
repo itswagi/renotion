@@ -1,11 +1,29 @@
 import type {
   BlockquoteChild,
+  ConvertBlockToType,
   ListItemChild,
   ParsedMarkdown,
+  ParsedParagraph,
   RichText,
-} from './types.js';
+} from './types';
 import { Fragment } from 'react/jsx-runtime';
-import { cn } from './utils/index.js';
+import { cn } from './utils';
+import {
+  Heading1,
+  Heading2,
+  Heading3,
+  SortableItem,
+  Heading1Wrapper,
+  Heading2Wrapper,
+  Heading3Wrapper,
+  HorizontalRuleWrapper,
+  ActionWrapper,
+  HorizontalRule,
+  BlockquoteItem,
+  ListItem,
+  CodeBlock,
+  Paragraph,
+} from '../components';
 
 export function isListItem(line: string): boolean {
   return /^(\s*(?:[-*+]|\d+\.)\s*(?:\[ ?[xX]?\])?(?:\s+.*)?)$/.test(line);
@@ -608,7 +626,7 @@ export function removedFromStartLength(prev: string, curr: string): number {
 }
 
 export function richTextToHTML(richTexts: RichText[], key: string) {
-  let html = [];
+  const html = [];
   for (let i = 0; i < richTexts.length; i++) {
     const rt = richTexts[i]!;
     if (Object.values(rt.annotations).some((v) => v)) {
@@ -685,18 +703,19 @@ export function convertBlocksToMarkdown(blocks: ParsedMarkdown[]) {
             .join('')}\n\n`;
         case 'paragraph':
           return `${block.rich_text.map((rt) => rt.text).join('')}\n\n`;
-        case 'listItem':
+        case 'listItem': {
           const prefix =
             block.format === 'unordered'
               ? '- '
               : block.format === 'ordered'
-                ? `${block.numbering}. `
-                : block.format === 'task'
-                  ? `[${block.checked ? 'x' : ' '}] `
-                  : '';
+              ? `${block.numbering}. `
+              : block.format === 'task'
+              ? `[${block.checked ? 'x' : ' '}] `
+              : '';
           return `${'  '.repeat(block.level)}${prefix}${block.rich_text
             .map((rt) => rt.text)
             .join('')}\n`;
+        }
         case 'blockquote':
           return `${'> '.repeat(block.level)}${block.rich_text
             .map((rt) => rt.text)
@@ -714,4 +733,468 @@ export function convertBlocksToMarkdown(blocks: ParsedMarkdown[]) {
     .join('')
     .trim();
   return markdown;
+}
+
+export function markdownToBlock({
+  parsed,
+  props,
+  ref,
+  updateNode,
+  isDragOverlay = false,
+  convertBlockType,
+}: {
+  parsed: ParsedMarkdown[];
+  updateNode?: (
+    updated: RichText[],
+    blockIdx: string,
+    childIdx?: string,
+  ) => void;
+  ref?: any;
+  props?: any;
+  isDragOverlay?: boolean;
+  convertBlockType?: (id: string, type: ConvertBlockToType) => void;
+}) {
+  const notionBlocks = [];
+
+  for (const block of parsed) {
+    switch (block.type) {
+      case 'heading':
+        switch (block.level) {
+          case 1:
+            if (isDragOverlay) {
+              return (
+                <Heading1
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  ref={ref}
+                  className="bg-[rgb(25,25,25)] p-2"
+                  {...props}
+                />
+              );
+            }
+            notionBlocks.push(
+              <SortableItem
+                key={block.id}
+                id={block.id}
+                Element={Heading1Wrapper}
+                blockType={block.type}
+                level={block.level}
+                onChangeType={(type) => convertBlockType?.(block.id, type)}
+              >
+                <Heading1
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  onChange={(updated: RichText[]) =>
+                    updateNode?.(updated, block.id)
+                  }
+                />
+              </SortableItem>,
+            );
+            break;
+          case 2:
+            if (isDragOverlay) {
+              return (
+                <Heading2
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  ref={ref}
+                  className="bg-[rgb(25,25,25)] p-2"
+                  {...props}
+                />
+              );
+            }
+            notionBlocks.push(
+              <SortableItem
+                key={block.id}
+                id={block.id}
+                Element={Heading2Wrapper}
+                blockType={block.type}
+                level={block.level}
+                onChangeType={(type) => convertBlockType?.(block.id, type)}
+              >
+                <Heading2
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  onChange={(updated: RichText[]) =>
+                    updateNode?.(updated, block.id)
+                  }
+                />
+              </SortableItem>,
+            );
+            break;
+          case 3:
+            if (isDragOverlay) {
+              return (
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  ref={ref}
+                  className="bg-[rgb(25,25,25)] p-2"
+                  {...props}
+                />
+              );
+            }
+            notionBlocks.push(
+              <SortableItem
+                key={block.id}
+                id={block.id}
+                Element={Heading3Wrapper}
+                blockType={block.type}
+                level={block.level}
+                onChangeType={(type) => convertBlockType?.(block.id, type)}
+              >
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  onChange={(updated: RichText[]) =>
+                    updateNode?.(updated, block.id)
+                  }
+                />
+              </SortableItem>,
+            );
+            break;
+          case 4:
+            if (isDragOverlay) {
+              return (
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  ref={ref}
+                  className="bg-[rgb(25,25,25)] p-2"
+                  {...props}
+                />
+              );
+            }
+            notionBlocks.push(
+              <SortableItem
+                key={block.id}
+                id={block.id}
+                Element={Heading3Wrapper}
+                blockType={block.type}
+                level={block.level}
+                onChangeType={(type) => convertBlockType?.(block.id, type)}
+              >
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  onChange={(updated: RichText[]) =>
+                    updateNode?.(updated, block.id)
+                  }
+                />
+              </SortableItem>,
+            );
+            break;
+          case 5:
+            if (isDragOverlay) {
+              return (
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  ref={ref}
+                  className="bg-[rgb(25,25,25)] p-2"
+                  {...props}
+                />
+              );
+            }
+            notionBlocks.push(
+              <SortableItem
+                key={block.id}
+                id={block.id}
+                Element={Heading3Wrapper}
+                blockType={block.type}
+                level={block.level}
+                onChangeType={(type) => convertBlockType?.(block.id, type)}
+              >
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  onChange={(updated: RichText[]) =>
+                    updateNode?.(updated, block.id)
+                  }
+                />
+              </SortableItem>,
+            );
+            break;
+          case 6:
+            if (isDragOverlay) {
+              return (
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  ref={ref}
+                  className="bg-[rgb(25,25,25)] p-2"
+                  {...props}
+                />
+              );
+            }
+            notionBlocks.push(
+              <SortableItem
+                key={block.id}
+                id={block.id}
+                Element={Heading3Wrapper}
+                blockType={block.type}
+                level={block.level}
+                onChangeType={(type) => convertBlockType?.(block.id, type)}
+              >
+                <Heading3
+                  blockIdx={block.id}
+                  rich_text={block.rich_text}
+                  onChange={(updated: RichText[]) =>
+                    updateNode?.(updated, block.id)
+                  }
+                />
+              </SortableItem>,
+            );
+            break;
+        }
+        break;
+      case 'horizontal_rule':
+        // convert to notion horizontal rule block
+        notionBlocks.push(
+          <HorizontalRuleWrapper key={block.id} blockIdx={block.id}>
+            <ActionWrapper id={block.id}>
+              <HorizontalRule />
+            </ActionWrapper>
+          </HorizontalRuleWrapper>,
+        );
+        break;
+
+      case 'blockquote':
+        if (isDragOverlay) {
+          return (
+            <BlockquoteItem
+              level={block.level}
+              id={block.id}
+              rich_text={block.rich_text}
+              className="bg-[rgb(25,25,25)] p-2"
+              {...props}
+            />
+          );
+        }
+        // convert to notion blockquote block
+        notionBlocks.push(
+          <SortableItem
+            key={block.id}
+            id={block.id}
+            leftOffset={
+              block.level > 1
+                ? (block.level - 2) * 14 + 3 * (block.level - 2)
+                : 0
+            }
+            blockType={block.type}
+            level={block.level}
+            onChangeType={(type) => convertBlockType?.(block.id, type)}
+          >
+            <BlockquoteItem
+              level={block.level}
+              id={block.id}
+              rich_text={block.rich_text}
+              onChange={(updated: RichText[]) =>
+                updateNode?.(updated, block.id)
+              }
+            />
+          </SortableItem>,
+        );
+        break;
+      case 'listItem':
+        if (isDragOverlay) {
+          return (
+            <ListItem
+              id={block.id}
+              level={block.level}
+              type={block.format}
+              checked={block.format === 'task' ? block.checked : undefined}
+              numbering={
+                block.format === 'ordered' ? block.numbering : undefined
+              }
+              rich_text={block.rich_text}
+              className="bg-[rgb(25,25,25)] p-2"
+              {...props}
+            />
+          );
+        }
+        // convert to notion list item blocks
+        notionBlocks.push(
+          <SortableItem
+            key={block.id}
+            id={block.id}
+            leftOffset={block.level > 0 ? block.level * 24 : 0}
+            blockType={block.type}
+            level={block.level}
+            onChangeType={(type) => convertBlockType?.(block.id, type)}
+          >
+            <ListItem
+              id={block.id}
+              level={block.level}
+              type={block.format}
+              checked={block.format === 'task' ? block.checked : undefined}
+              numbering={
+                block.format === 'ordered' ? block.numbering : undefined
+              }
+              rich_text={block.rich_text}
+              onChange={(updated: RichText[]) =>
+                updateNode?.(updated, block.id, block.id)
+              }
+            />
+          </SortableItem>,
+        );
+        break;
+      case 'code':
+        if (isDragOverlay) {
+          return (
+            <CodeBlock
+              code={block.rich_text[0]?.text || ''}
+              className="bg-[rgb(25,25,25)] p-2"
+              {...props}
+            />
+          );
+        }
+        // convert to notion code block
+        notionBlocks.push(
+          <SortableItem
+            key={block.id}
+            id={block.id}
+            blockType={block.type}
+            onChangeType={(type) => convertBlockType?.(block.id, type)}
+          >
+            <CodeBlock code={block.rich_text[0]?.text || ''} />
+          </SortableItem>,
+        );
+        break;
+      case 'paragraph':
+        if (isDragOverlay) {
+          return (
+            <Paragraph
+              blockIdx={block.id}
+              rich_text={block.rich_text}
+              ref={ref}
+              className="bg-[rgb(25,25,25)] p-2"
+              {...props}
+            />
+          );
+        }
+        // convert to notion paragraph block
+        notionBlocks.push(
+          <SortableItem
+            key={block.id}
+            id={block.id}
+            blockType={block.type}
+            onChangeType={(type) => convertBlockType?.(block.id, type)}
+          >
+            <Paragraph
+              blockIdx={block.id}
+              rich_text={block.rich_text}
+              onChange={(updated: RichText[]) =>
+                updateNode?.(updated, block.id)
+              }
+            />
+          </SortableItem>,
+        );
+        break;
+    }
+  }
+  return notionBlocks;
+}
+
+export function blockToType(block: ParsedMarkdown, type: ConvertBlockToType) {
+  if (!block) return null;
+  switch (type) {
+    case 'paragraph':
+      return {
+        id: block.id,
+        type: 'paragraph',
+        rich_text: (block as any)?.rich_text,
+      } as ParsedParagraph;
+    case 'heading1':
+      return {
+        id: block.id,
+        type: 'heading',
+        level: 1,
+        rich_text: (block as any).rich_text,
+      };
+    case 'heading2':
+      return {
+        id: block.id,
+        type: 'heading',
+        level: 2,
+        rich_text: (block as any).rich_text,
+      };
+    case 'heading3':
+      return {
+        id: block.id,
+        type: 'heading',
+        level: 3,
+        rich_text: (block as any).rich_text,
+      };
+    case 'heading4':
+      return {
+        id: block.id,
+        type: 'heading',
+        level: 4,
+        rich_text: (block as any).rich_text,
+      };
+    case 'heading5':
+      return {
+        id: block.id,
+        type: 'heading',
+        level: 5,
+        rich_text: (block as any).rich_text,
+      };
+    case 'heading6':
+      return {
+        id: block.id,
+        type: 'heading',
+        level: 6,
+        rich_text: (block as any).rich_text,
+      };
+    case 'horizontal_rule':
+      return {
+        id: block.id,
+        type: 'horizontal_rule',
+      };
+    case 'blockquote':
+      return {
+        id: block.id,
+        type: 'blockquote',
+        level: 1,
+        rich_text: (block as any).rich_text,
+      };
+    case 'listItemBulleted':
+      return {
+        id: block.id,
+        type: 'listItem',
+        level: 1,
+        format: 'unordered',
+        rich_text: (block as any).rich_text,
+      };
+    case 'listItemNumbered':
+      return {
+        id: block.id,
+        type: 'listItem',
+        level: 1,
+        format: 'ordered',
+        numbering: 1,
+        rich_text: (block as any).rich_text,
+      };
+    case 'listItemTask':
+      return {
+        id: block.id,
+        type: 'listItem',
+        level: 1,
+        format: 'ordered',
+        checked: false,
+        rich_text: (block as any).rich_text,
+      };
+
+    case 'code':
+      return {
+        id: block.id,
+        type: 'code',
+        rich_text: (block as any).rich_text,
+      };
+
+    default:
+      break;
+  }
+  return null;
 }

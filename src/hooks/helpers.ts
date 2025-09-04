@@ -1,4 +1,4 @@
-import { findTextNodeAtChar } from '../lib/index.js';
+import { findTextNodeAtChar } from '../lib';
 
 export const restoreCaretToCorrectPosition = (
   savedCaretPosition: number,
@@ -48,9 +48,7 @@ function caretDelta(before: string, current: string, cp: number): number {
 
     // --- Handle marker groups (*, **, *** etc.) ---
     if (isMarker(bch!)) {
-      let bStart = bi;
       while (bi < before.length && isMarker(before[bi]!)) bi++;
-      let bLen = bi - bStart;
 
       // If caret was inside this marker group → snap to ci
       if (cp <= bi) {

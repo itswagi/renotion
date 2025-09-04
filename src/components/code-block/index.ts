@@ -1,2 +1,2 @@
-export { default as CodeBlock } from './code-block.jsx';
-export type { CodeBlockProps } from './types.js';
+export { default as CodeBlock } from './code-block';
+export type { CodeBlockProps } from './types';

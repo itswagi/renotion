@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ActionWrapper } from '../ActionWrapper.jsx';
-import type { ConvertBlockToType, ParsedMarkdown } from '../../lib/index.js';
+import { ActionWrapper } from '../ActionWrapper';
+import type { ConvertBlockToType, ParsedMarkdown } from '../../lib';
 
 export function SortableItem({
   id,

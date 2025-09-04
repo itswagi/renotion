@@ -1,1 +1,3 @@
-export { Renotion } from './Editor.js';
+import './styles.css';
+
+export { Renotion } from './Editor';

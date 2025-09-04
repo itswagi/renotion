@@ -20,9 +20,9 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { getHoverManager } from '../lib/index.js';
-import type { ConvertBlockToType, ParsedMarkdown } from '../lib/index.js';
-import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities/useSyntheticListeners.js';
+import { getHoverManager } from '../lib';
+import type { ConvertBlockToType, ParsedMarkdown } from '../lib';
+import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities/useSyntheticListeners';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -68,7 +68,7 @@ export const ActionWrapper: React.FC<{
   useEffect(() => {
     const hoverManager = getHoverManager();
     if (!hoverManager || !blockRef.current) return;
-    let hoverId = `${id}`;
+    const hoverId = `${id}`;
 
     hoverManager.registerBlock({
       id: hoverId,

@@ -1,7 +1,7 @@
 'use client';
 
-import { useTextChanges } from '../hooks/useTextChanges.jsx';
-import { cn, type RichText } from '../lib/index.js';
+import { useTextChanges } from '../hooks/useTextChanges';
+import { cn, type RichText } from '../lib';
 
 export const Heading3Wrapper: React.FC<{
   blockIdx: string;

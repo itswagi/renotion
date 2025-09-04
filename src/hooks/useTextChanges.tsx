@@ -5,8 +5,8 @@ import {
   getCaretOffsetRelativeToParent,
   parseHTMLToRichText,
   richTextToHTML,
-} from '../lib/index.js';
-import { restoreCaretToCorrectPosition } from './helpers.js';
+} from '../lib';
+import { restoreCaretToCorrectPosition } from './helpers';
 
 export const useTextChanges = ({
   blockIdx,
