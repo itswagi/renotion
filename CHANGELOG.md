@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.0
+
+### Minor Changes
+
+- 7179cbb: use vite library mode
+
 ## 1.1.2
 
 ### Patch Changes
