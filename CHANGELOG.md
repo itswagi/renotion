@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.1
+
+### Patch Changes
+
+- ca29a54: added types
+
 ## 1.2.0
 
 ### Minor Changes
