@@ -33,6 +33,7 @@ export default defineConfig(({ command }) => {
     plugins: [
       react(),
       dts({
+        tsconfigPath: './tsconfig.app.json',
         insertTypesEntry: true,
         outDir: 'dist',
         include: ['src'],

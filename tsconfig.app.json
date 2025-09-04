@@ -29,6 +29,6 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["playground", "global.d.ts", "src"],
+  "include": ["playground", "src"],
   "exclude": ["node_modules", "dist"]
 }

@@ -25,11 +25,9 @@ import {
   markdownToBlock,
   parseMarkdown,
 } from './lib';
+import type { RenotionProps } from './types';
 
-export const Renotion: React.FC<{
-  markdown: string;
-  onChange?: (markdown: string) => void;
-}> = ({ markdown, onChange }) => {
+export const Renotion: React.FC<RenotionProps> = ({ markdown, onChange }) => {
   // keep parsed markdown in state and recompute only when input changes
   const [parsed, setParsed] = useState<ParsedMarkdown[]>(() =>
     parseMarkdown(markdown),
