@@ -1,4 +1,4 @@
-import { createTheme, Renotion } from '../src';
+import { createTheme, Renotion } from 'renotion';
 import './App.css';
 import { kitchenSinkMarkdown } from './constants';
 
