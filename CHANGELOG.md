@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.4
+
+### Patch Changes
+
+- 0368b61: fixed type issues
+
 ## 1.2.3
 
 ### Patch Changes

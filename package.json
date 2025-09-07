@@ -1,6 +1,6 @@
 {
   "name": "renotion",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A Notion style viewer and editor for markdown",
   "keywords": [
     "devable",
@@ -25,6 +25,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/renotion.es.js",
       "require": "./dist/renotion.cjs.js"
     },
