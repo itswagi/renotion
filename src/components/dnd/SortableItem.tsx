@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ActionWrapper } from '../ActionWrapper';
+import { ActionWrapper } from '../theme/ActionWrapper';
 import type { ConvertBlockToType, ParsedMarkdown } from '../../lib';
 
 export function SortableItem({
@@ -11,6 +11,8 @@ export function SortableItem({
   blockType,
   level,
   onChangeType,
+  dragIcon,
+  dropdownIcon,
 }: {
   children: React.ReactNode;
   id: string;
@@ -19,6 +21,8 @@ export function SortableItem({
   blockType?: ParsedMarkdown['type'];
   level?: number;
   onChangeType?: (type: ConvertBlockToType) => void;
+  dragIcon: React.FC<{ className?: string }>;
+  dropdownIcon: React.FC<{ className?: string }>;
 }) {
   const {
     attributes,
@@ -33,11 +37,11 @@ export function SortableItem({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: active?.id === id ? 0.5 : 1,
+    // opacity: active?.id === id ? 0.5 : 1,
   };
 
   return (
-    <Element ref={setNodeRef} style={style}>
+    <Element ref={setNodeRef} style={style} data-block-idx={id}>
       <ActionWrapper
         id={id}
         isDragging={!!active}
@@ -48,6 +52,8 @@ export function SortableItem({
         blockType={blockType}
         level={level}
         onChangeType={onChangeType}
+        actionDragIcon={dragIcon}
+        actionDropdownIcon={dropdownIcon}
       >
         {children}
       </ActionWrapper>

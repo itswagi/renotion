@@ -18,6 +18,7 @@ import {
 } from '@dnd-kit/sortable';
 import { useCallback, useMemo, useState } from 'react';
 import { DragOverlayItem } from './components';
+import { defaultTheme } from './components/theme/utils';
 import type { ConvertBlockToType, ParsedMarkdown, RichText } from './lib';
 import {
   blockToType,
@@ -27,7 +28,17 @@ import {
 } from './lib';
 import type { RenotionProps } from './types';
 
-export const Renotion: React.FC<RenotionProps> = ({ markdown, onChange }) => {
+export const Renotion: React.FC<RenotionProps> = ({
+  markdown,
+  onChange,
+  theme,
+}) => {
+  const components = useMemo(() => {
+    if (theme) {
+      return theme;
+    }
+    return defaultTheme;
+  }, [theme]);
   // keep parsed markdown in state and recompute only when input changes
   const [parsed, setParsed] = useState<ParsedMarkdown[]>(() =>
     parseMarkdown(markdown),
@@ -41,18 +52,21 @@ export const Renotion: React.FC<RenotionProps> = ({ markdown, onChange }) => {
   );
 
   // optimized updateNode: no deep clone, just copy necessary level
-  const updateNode = useCallback((updated: RichText[], blockIdx: string) => {
-    setParsed((prev) => {
-      const newParsed = prev.map((block) =>
-        block.id === blockIdx ? { ...block, rich_text: updated } : block,
-      );
-      if (onChange) {
-        // convert to markdown
-        onChange(convertBlocksToMarkdown(newParsed));
-      }
-      return newParsed;
-    });
-  }, []);
+  const updateNode = useCallback(
+    (updated: RichText[], blockIdx: string) => {
+      setParsed((prev) => {
+        const newParsed = prev.map((block) =>
+          block.id === blockIdx ? { ...block, rich_text: updated } : block,
+        );
+        if (onChange) {
+          // convert to markdown
+          onChange(convertBlocksToMarkdown(newParsed));
+        }
+        return newParsed;
+      });
+    },
+    [onChange],
+  );
   const [activeId, setActiveId] = useState<string | null>(null);
   const convertBlockType = useCallback(
     (id: string, type: ConvertBlockToType) => {
@@ -69,12 +83,12 @@ export const Renotion: React.FC<RenotionProps> = ({ markdown, onChange }) => {
         return newParsed as any;
       });
     },
-    [onChange],
+    [],
   );
   // memoize conversion to HTML blocks
   const htmlBlocks = useMemo(
-    () => markdownToBlock({ parsed, updateNode, convertBlockType }),
-    [parsed, updateNode],
+    () => markdownToBlock({ parsed, updateNode, convertBlockType, components }),
+    [components, convertBlockType, parsed, updateNode],
   );
 
   function handleDragEnd(event: DragEndEvent) {
@@ -120,20 +134,26 @@ export const Renotion: React.FC<RenotionProps> = ({ markdown, onChange }) => {
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
     >
-      <div className="editor--wrapper relative p-20">
-        <SortableContext
-          items={flattenedIds}
-          strategy={verticalListSortingStrategy}
-        >
-          {htmlBlocks}
-        </SortableContext>
-        <DragOverlay>
-          {activeId ? (
-            <DragOverlayItem id={activeId} block={getBlockById} />
-          ) : null}
-        </DragOverlay>
-        <div className="action--portal absolute top-0 left-0" />
-      </div>
+      <components.editorWrapper className="editor--wrapper relative p-20">
+        <>
+          <SortableContext
+            items={flattenedIds}
+            strategy={verticalListSortingStrategy}
+          >
+            {htmlBlocks}
+          </SortableContext>
+          <DragOverlay>
+            {activeId ? (
+              <DragOverlayItem
+                id={activeId}
+                block={getBlockById}
+                components={components}
+              />
+            ) : null}
+          </DragOverlay>
+          <div className="action--portal absolute top-0 left-0" />
+        </>
+      </components.editorWrapper>
     </DndContext>
   );
 };

@@ -1,5 +1,5 @@
+import { createTheme, Renotion } from '../src';
 import './App.css';
-import { Renotion } from 'renotion';
 import { kitchenSinkMarkdown } from './constants';
 
 function App() {

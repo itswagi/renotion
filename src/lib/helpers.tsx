@@ -1,3 +1,7 @@
+import { Fragment } from 'react/jsx-runtime';
+import { CodeBlock, SortableItem, ThemeComponent } from '../components';
+import { ListItem, Paragraph } from '../components/theme';
+import type { Theme } from '../components/theme/utils';
 import type {
   BlockquoteChild,
   ConvertBlockToType,
@@ -6,24 +10,7 @@ import type {
   ParsedParagraph,
   RichText,
 } from './types';
-import { Fragment } from 'react/jsx-runtime';
 import { cn } from './utils';
-import {
-  Heading1,
-  Heading2,
-  Heading3,
-  SortableItem,
-  Heading1Wrapper,
-  Heading2Wrapper,
-  Heading3Wrapper,
-  HorizontalRuleWrapper,
-  ActionWrapper,
-  HorizontalRule,
-  BlockquoteItem,
-  ListItem,
-  CodeBlock,
-  Paragraph,
-} from '../components';
 
 export function isListItem(line: string): boolean {
   return /^(\s*(?:[-*+]|\d+\.)\s*(?:\[ ?[xX]?\])?(?:\s+.*)?)$/.test(line);
@@ -742,6 +729,7 @@ export function markdownToBlock({
   updateNode,
   isDragOverlay = false,
   convertBlockType,
+  components: theme,
 }: {
   parsed: ParsedMarkdown[];
   updateNode?: (
@@ -753,6 +741,7 @@ export function markdownToBlock({
   props?: any;
   isDragOverlay?: boolean;
   convertBlockType?: (id: string, type: ConvertBlockToType) => void;
+  components: Theme;
 }) {
   const notionBlocks = [];
 
@@ -763,12 +752,13 @@ export function markdownToBlock({
           case 1:
             if (isDragOverlay) {
               return (
-                <Heading1
+                <ThemeComponent
+                  Component={theme.heading1}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
-                  ref={ref}
-                  className="bg-[rgb(25,25,25)] p-2"
+                  dragRef={ref}
                   {...props}
+                  className={cn(props.className, 'opacity-20')}
                 />
               );
             }
@@ -776,12 +766,15 @@ export function markdownToBlock({
               <SortableItem
                 key={block.id}
                 id={block.id}
-                Element={Heading1Wrapper}
+                Element={theme.heading1Wrapper}
                 blockType={block.type}
                 level={block.level}
                 onChangeType={(type) => convertBlockType?.(block.id, type)}
+                dragIcon={theme.actionDragIcon}
+                dropdownIcon={theme.actionDropdownIcon}
               >
-                <Heading1
+                <ThemeComponent
+                  Component={theme.heading1}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
                   onChange={(updated: RichText[]) =>
@@ -794,12 +787,13 @@ export function markdownToBlock({
           case 2:
             if (isDragOverlay) {
               return (
-                <Heading2
+                <ThemeComponent
+                  Component={theme.heading2}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
-                  ref={ref}
-                  className="bg-[rgb(25,25,25)] p-2"
+                  dragRef={ref}
                   {...props}
+                  className={cn(props.className, 'opacity-20')}
                 />
               );
             }
@@ -807,12 +801,15 @@ export function markdownToBlock({
               <SortableItem
                 key={block.id}
                 id={block.id}
-                Element={Heading2Wrapper}
+                Element={theme.heading2Wrapper}
                 blockType={block.type}
                 level={block.level}
                 onChangeType={(type) => convertBlockType?.(block.id, type)}
+                dragIcon={theme.actionDragIcon}
+                dropdownIcon={theme.actionDropdownIcon}
               >
-                <Heading2
+                <ThemeComponent
+                  Component={theme.heading2}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
                   onChange={(updated: RichText[]) =>
@@ -825,12 +822,13 @@ export function markdownToBlock({
           case 3:
             if (isDragOverlay) {
               return (
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
-                  ref={ref}
-                  className="bg-[rgb(25,25,25)] p-2"
+                  dragRef={ref}
                   {...props}
+                  className={cn(props.className, 'opacity-20')}
                 />
               );
             }
@@ -838,12 +836,15 @@ export function markdownToBlock({
               <SortableItem
                 key={block.id}
                 id={block.id}
-                Element={Heading3Wrapper}
+                Element={theme.heading3Wrapper}
                 blockType={block.type}
                 level={block.level}
                 onChangeType={(type) => convertBlockType?.(block.id, type)}
+                dragIcon={theme.actionDragIcon}
+                dropdownIcon={theme.actionDropdownIcon}
               >
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
                   onChange={(updated: RichText[]) =>
@@ -856,12 +857,13 @@ export function markdownToBlock({
           case 4:
             if (isDragOverlay) {
               return (
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
-                  ref={ref}
-                  className="bg-[rgb(25,25,25)] p-2"
+                  dragRef={ref}
                   {...props}
+                  className={cn(props.className, 'opacity-20')}
                 />
               );
             }
@@ -869,12 +871,15 @@ export function markdownToBlock({
               <SortableItem
                 key={block.id}
                 id={block.id}
-                Element={Heading3Wrapper}
+                Element={theme.heading3Wrapper}
                 blockType={block.type}
                 level={block.level}
                 onChangeType={(type) => convertBlockType?.(block.id, type)}
+                dragIcon={theme.actionDragIcon}
+                dropdownIcon={theme.actionDropdownIcon}
               >
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
                   onChange={(updated: RichText[]) =>
@@ -887,12 +892,13 @@ export function markdownToBlock({
           case 5:
             if (isDragOverlay) {
               return (
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
-                  ref={ref}
-                  className="bg-[rgb(25,25,25)] p-2"
+                  dragRef={ref}
                   {...props}
+                  className={cn(props.className, 'opacity-20')}
                 />
               );
             }
@@ -900,12 +906,15 @@ export function markdownToBlock({
               <SortableItem
                 key={block.id}
                 id={block.id}
-                Element={Heading3Wrapper}
+                Element={theme.heading3Wrapper}
                 blockType={block.type}
                 level={block.level}
                 onChangeType={(type) => convertBlockType?.(block.id, type)}
+                dragIcon={theme.actionDragIcon}
+                dropdownIcon={theme.actionDropdownIcon}
               >
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
                   onChange={(updated: RichText[]) =>
@@ -918,12 +927,13 @@ export function markdownToBlock({
           case 6:
             if (isDragOverlay) {
               return (
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
-                  ref={ref}
-                  className="bg-[rgb(25,25,25)] p-2"
+                  dragRef={ref}
                   {...props}
+                  className={cn(props.className, 'opacity-20')}
                 />
               );
             }
@@ -931,12 +941,15 @@ export function markdownToBlock({
               <SortableItem
                 key={block.id}
                 id={block.id}
-                Element={Heading3Wrapper}
+                Element={theme.heading3Wrapper}
                 blockType={block.type}
                 level={block.level}
                 onChangeType={(type) => convertBlockType?.(block.id, type)}
+                dragIcon={theme.actionDragIcon}
+                dropdownIcon={theme.actionDropdownIcon}
               >
-                <Heading3
+                <ThemeComponent
+                  Component={theme.heading3}
                   blockIdx={block.id}
                   rich_text={block.rich_text}
                   onChange={(updated: RichText[]) =>
@@ -949,25 +962,37 @@ export function markdownToBlock({
         }
         break;
       case 'horizontal_rule':
-        // convert to notion horizontal rule block
         notionBlocks.push(
-          <HorizontalRuleWrapper key={block.id} blockIdx={block.id}>
-            <ActionWrapper id={block.id}>
-              <HorizontalRule />
-            </ActionWrapper>
-          </HorizontalRuleWrapper>,
+          <SortableItem
+            key={block.id}
+            id={block.id}
+            Element={theme.horizontalRuleWrapper}
+            blockType={block.type}
+            onChangeType={(type) => convertBlockType?.(block.id, type)}
+            dragIcon={theme.actionDragIcon}
+            dropdownIcon={theme.actionDropdownIcon}
+          >
+            <ThemeComponent
+              Component={theme.horizontalRule}
+              blockIdx={block.id}
+              onChange={(updated: RichText[]) =>
+                updateNode?.(updated, block.id)
+              }
+            />
+          </SortableItem>,
         );
         break;
 
       case 'blockquote':
         if (isDragOverlay) {
           return (
-            <BlockquoteItem
+            <ThemeComponent
+              Component={theme.blockquote}
               level={block.level}
-              id={block.id}
+              blockIdx={block.id}
               rich_text={block.rich_text}
-              className="bg-[rgb(25,25,25)] p-2"
               {...props}
+              className={cn(props.className, 'opacity-20')}
             />
           );
         }
@@ -984,10 +1009,13 @@ export function markdownToBlock({
             blockType={block.type}
             level={block.level}
             onChangeType={(type) => convertBlockType?.(block.id, type)}
+            dragIcon={theme.actionDragIcon}
+            dropdownIcon={theme.actionDropdownIcon}
           >
-            <BlockquoteItem
+            <ThemeComponent
+              Component={theme.blockquote}
               level={block.level}
-              id={block.id}
+              blockIdx={block.id}
               rich_text={block.rich_text}
               onChange={(updated: RichText[]) =>
                 updateNode?.(updated, block.id)
@@ -999,8 +1027,8 @@ export function markdownToBlock({
       case 'listItem':
         if (isDragOverlay) {
           return (
-            <ListItem
-              id={block.id}
+            <ThemeComponent
+              blockIdx={block.id}
               level={block.level}
               type={block.format}
               checked={block.format === 'task' ? block.checked : undefined}
@@ -1008,8 +1036,9 @@ export function markdownToBlock({
                 block.format === 'ordered' ? block.numbering : undefined
               }
               rich_text={block.rich_text}
-              className="bg-[rgb(25,25,25)] p-2"
               {...props}
+              className={cn(props.className, 'opacity-20')}
+              Component={ListItem}
             />
           );
         }
@@ -1022,9 +1051,12 @@ export function markdownToBlock({
             blockType={block.type}
             level={block.level}
             onChangeType={(type) => convertBlockType?.(block.id, type)}
+            dragIcon={theme.actionDragIcon}
+            dropdownIcon={theme.actionDropdownIcon}
           >
-            <ListItem
-              id={block.id}
+            <ThemeComponent
+              Component={ListItem}
+              blockIdx={block.id}
               level={block.level}
               type={block.format}
               checked={block.format === 'task' ? block.checked : undefined}
@@ -1042,10 +1074,11 @@ export function markdownToBlock({
       case 'code':
         if (isDragOverlay) {
           return (
-            <CodeBlock
+            <ThemeComponent
+              Component={CodeBlock}
               code={block.rich_text[0]?.text || ''}
-              className="bg-[rgb(25,25,25)] p-2"
               {...props}
+              className={cn(props.className, 'opacity-20')}
             />
           );
         }
@@ -1056,19 +1089,29 @@ export function markdownToBlock({
             id={block.id}
             blockType={block.type}
             onChangeType={(type) => convertBlockType?.(block.id, type)}
+            dragIcon={theme.actionDragIcon}
+            dropdownIcon={theme.actionDropdownIcon}
           >
-            <CodeBlock code={block.rich_text[0]?.text || ''} />
+            <ThemeComponent
+              Component={CodeBlock}
+              blockIdx={block.id}
+              onChange={(updated: RichText[]) =>
+                updateNode?.(updated, block.id)
+              }
+              code={block.rich_text[0]?.text || ''}
+            />
           </SortableItem>,
         );
         break;
       case 'paragraph':
         if (isDragOverlay) {
           return (
-            <Paragraph
+            <ThemeComponent
+              Component={Paragraph}
               blockIdx={block.id}
               rich_text={block.rich_text}
               ref={ref}
-              className="bg-[rgb(25,25,25)] p-2"
+              className="opacity-20"
               {...props}
             />
           );
@@ -1080,8 +1123,11 @@ export function markdownToBlock({
             id={block.id}
             blockType={block.type}
             onChangeType={(type) => convertBlockType?.(block.id, type)}
+            dragIcon={theme.actionDragIcon}
+            dropdownIcon={theme.actionDropdownIcon}
           >
-            <Paragraph
+            <ThemeComponent
+              Component={Paragraph}
               blockIdx={block.id}
               rich_text={block.rich_text}
               onChange={(updated: RichText[]) =>

@@ -1,27 +1,6 @@
 'use client';
 
 import type { DraggableAttributes } from '@dnd-kit/core';
-import {
-  CodeXml,
-  GripVertical,
-  Heading1,
-  Heading2,
-  Heading3,
-  Heading4,
-  Heading5,
-  Heading6,
-  List,
-  ListChecks,
-  ListOrdered,
-  MessageSquareQuote,
-  Minus,
-  Settings,
-  Type,
-} from 'lucide-react/icons';
-import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { getHoverManager } from '../lib';
-import type { ConvertBlockToType, ParsedMarkdown } from '../lib';
 import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities/useSyntheticListeners';
 import {
   DropdownMenu,
@@ -35,6 +14,25 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu';
+import {
+  CodeXml,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6,
+  List,
+  ListChecks,
+  ListOrdered,
+  MessageSquareQuote,
+  Minus,
+  Type,
+} from 'lucide-react/icons';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import type { ConvertBlockToType, ParsedMarkdown } from '../../lib';
+import { getHoverManager } from '../../lib';
 
 export const ActionWrapper: React.FC<{
   id: string;
@@ -47,6 +45,8 @@ export const ActionWrapper: React.FC<{
   blockType?: ParsedMarkdown['type'];
   level?: number;
   onChangeType?: (type: ConvertBlockToType) => void;
+  actionDropdownIcon: React.FC<{ className?: string }>;
+  actionDragIcon: React.FC<{ className?: string }>;
 }> = ({
   id,
   leftOffset: lf = 0,
@@ -58,6 +58,8 @@ export const ActionWrapper: React.FC<{
   blockType,
   level,
   onChangeType,
+  actionDragIcon: DragIcon,
+  actionDropdownIcon: DropdownIcon,
 }) => {
   const blockRef = useRef<HTMLDivElement>(null);
   const [showActions, setShowActions] = useState(false);
@@ -97,10 +99,10 @@ export const ActionWrapper: React.FC<{
     return () => {
       hoverManager.unregisterBlock(hoverId);
     };
-  }, []);
+  }, [id, lf]);
 
   return (
-    <div ref={blockRef}>
+    <div ref={blockRef} className="w-full">
       {children}
 
       {showActions &&
@@ -114,8 +116,8 @@ export const ActionWrapper: React.FC<{
             <div className="h-6 flex items-center justify center shrink-0 grow-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="px-1 py-1.5 rounded hover:bg-[rgba(255,255,255,0.055)] flex justify-center items-center grow-0 shrink-0 cursor-grab text-[rgba(255,255,255,0.46)]">
-                    <Settings className="w-[14px] h-[14px]" />
+                  <button className="px-1 py-1.5 rounded hover:bg-[rgba(255,255,255,0.055)] flex justify-center items-center grow-0 shrink-0 cursor-grab">
+                    <DropdownIcon className="w-[14px] h-[14px]" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="left" align="center">
@@ -271,9 +273,9 @@ export const ActionWrapper: React.FC<{
                 {...listeners}
                 {...attributes}
                 ref={setActivatorNodeRef}
-                className="px-1 py-1.5 rounded hover:bg-[rgba(255,255,255,0.055)] flex justify-center items-center grow-0 shrink-0 cursor-grab text-[rgba(255,255,255,0.46)]"
+                className="px-1 py-1.5 rounded hover:bg-[rgba(255,255,255,0.055)] flex justify-center items-center grow-0 shrink-0 cursor-grab"
               >
-                <GripVertical className="w-[14px] h-[14px]" />
+                <DragIcon className="w-[14px] h-[14px]" />
               </button>
             </div>
           </div>,

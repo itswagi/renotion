@@ -1,7 +1,6 @@
 'use client';
 
-import { useTextChanges } from '../hooks/useTextChanges';
-import { cn, type RichText } from '../lib';
+import { cn } from '../../lib';
 
 export const ListWrapper: React.FC<{
   blockIdx: number;
@@ -19,28 +18,9 @@ export const ListItem: React.FC<{
   type: 'ordered' | 'unordered' | 'task';
   numbering?: number; // only for ordered lists
   checked?: boolean; // only for task lists
-  id: string;
-  rich_text: RichText[];
-  onChange?: (updated: RichText[]) => void;
-  ref?: any;
+  blockIdx: string;
   className?: string;
-}> = ({
-  level,
-  id,
-  type,
-  checked,
-  numbering,
-  rich_text,
-  onChange,
-  ref: dragRef,
-  className,
-  ...props
-}) => {
-  const { ref, handleBeforeInput, handleInput } = useTextChanges({
-    onChange,
-    blockIdx: id,
-    rich_text,
-  });
+}> = ({ level, blockIdx, type, checked, numbering, className, ...props }) => {
   return (
     <div
       className={cn(`w-full my-[1px]`)}
@@ -49,7 +29,7 @@ export const ListItem: React.FC<{
           marginInlineStart: `${level * 24}px`,
         }),
       }}
-      data-block-idx={id}
+      data-block-idx={blockIdx}
     >
       <div className="w-full flex items-start ps-0.5">
         {type === 'unordered' && level % 3 === 0 && (
@@ -111,11 +91,6 @@ export const ListItem: React.FC<{
         <div className="flex-[1_1_0px] min-w-[1px] flex flex-col">
           <div
             {...props}
-            ref={dragRef ? dragRef : ref}
-            contentEditable="true"
-            suppressContentEditableWarning
-            onBeforeInput={handleBeforeInput}
-            onInput={handleInput}
             className={cn(
               'w-full whitespace-break-spaces break-words py-[3px] px-0.5 text-start focus-visible:outline-none',
               className,

@@ -15,7 +15,7 @@ export const useTextChanges = ({
 }: {
   onChange?: (updated: RichText[]) => void;
   blockIdx: string;
-  rich_text: RichText[];
+  rich_text?: RichText[];
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const savedCaretPosition = useRef<number | null>(null);
@@ -30,7 +30,7 @@ export const useTextChanges = ({
   };
 
   useLayoutEffect(() => {
-    if (ref.current) {
+    if (ref.current && rich_text) {
       const idx = blockIdx;
       const html = renderToStaticMarkup(
         <>{richTextToHTML(rich_text, `${idx}`)}</>,
@@ -39,7 +39,7 @@ export const useTextChanges = ({
         ref.current.innerHTML = html;
       }
     }
-  }, [rich_text]);
+  }, [blockIdx, rich_text]);
 
   //   Restore caret immediately after DOM updates
   useLayoutEffect(() => {

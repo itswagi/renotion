@@ -3,8 +3,14 @@ import 'highlight.js/styles/atom-one-dark.css'; // Import a default style for sy
 import { Highlight, themes } from 'prism-react-renderer';
 import { highlightToPrismMap } from './constants';
 import type { CodeBlockProps } from './types';
+import { cn } from '../../lib';
 
-export default function CodeBlock({ code, language, caption }: CodeBlockProps) {
+export default function CodeBlock({
+  code,
+  language,
+  caption,
+  ...props
+}: CodeBlockProps) {
   // Detect language if not provided
   let detectedLang = language;
   if (!language) {
@@ -14,7 +20,7 @@ export default function CodeBlock({ code, language, caption }: CodeBlockProps) {
   }
 
   return (
-    <div className="relative">
+    <div className={cn('relative', props.className)}>
       <div className="absolute text-xs text-[#858585] mt-2 ml-4">
         {detectedLang}
       </div>

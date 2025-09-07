@@ -1,7 +1,6 @@
 'use client';
 
-import { useTextChanges } from '../hooks/useTextChanges';
-import { cn, type RichText } from '../lib';
+import { cn } from '../../lib';
 
 export const BlockquoteWrapper: React.FC<{
   blockIdx: number;
@@ -20,34 +19,11 @@ export const BlockquoteWrapper: React.FC<{
 
 export const BlockquoteItem: React.FC<{
   level: number;
-  id: string;
-  rich_text: RichText[];
-  onChange?: (updated: RichText[]) => void;
-  ref?: any;
   className?: string;
-}> = ({
-  level,
-  id,
-  rich_text,
-  onChange,
-  ref: dragRef,
-  className,
-  ...props
-}) => {
-  const { ref, handleBeforeInput, handleInput } = useTextChanges({
-    onChange,
-    blockIdx: id,
-    rich_text,
-  });
+}> = ({ level, className, ...props }) => {
   return (
     <div
       {...props}
-      ref={dragRef ? dragRef : ref}
-      contentEditable="true"
-      suppressContentEditableWarning
-      onBeforeInput={handleBeforeInput}
-      onInput={handleInput}
-      data-block-idx={id}
       className={cn(
         'w-full py-1 focus-visible:outline-none',
         {
