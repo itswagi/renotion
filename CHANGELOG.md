@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.3
+
+### Patch Changes
+
+- f515566: added theme
+
 ## 1.2.2
 
 ### Patch Changes
