@@ -4,6 +4,12 @@
 
 ### Patch Changes
 
+- 9803f3e: minor fixes
+
+## 1.2.5
+
+### Patch Changes
+
 - 41c9853: updated peer dependencies
 
 ## 1.2.4
