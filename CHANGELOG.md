@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.6
+
+### Patch Changes
+
+- bd41296: fixed dropdown action items issue
+
 ## 1.2.5
 
 ### Patch Changes
