@@ -20,13 +20,13 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "./dist/renotion.umd.js",
+  "main": "./dist/renotion.cjs.js",
   "module": "./dist/renotion.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/renotion.umd.js",
+      "import": "./dist/renotion.es.js",
       "require": "./dist/renotion.cjs.js"
     }
   },

@@ -62,7 +62,7 @@ export default defineConfig(({ command }) => {
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
         name: 'Renotion',
-        formats: ['es', 'umd'],
+        formats: ['es', 'cjs'],
         fileName: (format) => `renotion.${format}.js`,
       },
       rollupOptions: {

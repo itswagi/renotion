@@ -1,5 +1,3 @@
-'use client';
-
 import { cn } from '../../lib';
 
 export const ListWrapper: React.FC<{
