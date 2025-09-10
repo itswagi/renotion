@@ -2,10 +2,13 @@
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ command }) => {
   if (command === 'serve') {
@@ -57,9 +60,9 @@ export default defineConfig(({ command }) => {
     },
     build: {
       lib: {
-        entry: 'src/index.ts',
+        entry: resolve(__dirname, 'src/index.ts'),
         name: 'Renotion',
-        formats: ['es', 'cjs'],
+        formats: ['es', 'umd'],
         fileName: (format) => `renotion.${format}.js`,
       },
       rollupOptions: {

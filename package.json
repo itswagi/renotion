@@ -1,6 +1,6 @@
 {
   "name": "renotion",
-  "version": "1.2.5",
+  "version": "1.2.4",
   "description": "A Notion style viewer and editor for markdown",
   "keywords": [
     "devable",
@@ -20,17 +20,15 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "./dist/renotion.cjs.js",
+  "main": "./dist/renotion.umd.js",
   "module": "./dist/renotion.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/renotion.es.js",
+      "import": "./dist/renotion.umd.js",
       "require": "./dist/renotion.cjs.js"
-    },
-    "./style.css": "./dist/style.css",
-    "./css": "./dist/style.css"
+    }
   },
   "files": [
     "dist"
@@ -50,8 +48,8 @@
     "check": "npm run build && npm run type-check && npm run test"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.6",
