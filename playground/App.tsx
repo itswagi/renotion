@@ -1,18 +1,11 @@
-import { Renotion } from '../src';
+import { Renotion } from 'renotion';
 import './App.css';
 import { kitchenSinkMarkdown } from './constants';
 
 function App() {
   return (
     <>
-      <Renotion
-        markdown={`# 📝 Markdown Kitchen Sink
-
-## Second Heading
-## Second Heading
-## Second Heading
-## Second Heading`}
-      />
+      <Renotion markdown={kitchenSinkMarkdown} />
     </>
   );
 }
