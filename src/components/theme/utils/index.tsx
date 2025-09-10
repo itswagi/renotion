@@ -56,7 +56,7 @@ const theme = {
     <div
       {...props}
       className={cn(
-        'bg-[rgb(25,25,25)] text-[rgba(255,255,255,0.81)]',
+        're:bg-[rgb(25,25,25)] re:text-[rgba(255,255,255,0.81)]',
         props?.className,
       )}
     >
@@ -66,13 +66,13 @@ const theme = {
   actionDragIcon: (props: { className?: string }) => (
     <GripVertical
       {...props}
-      className={cn('text-[rgba(255,255,255,0.46)]', props?.className)}
+      className={cn('re:text-[rgba(255,255,255,0.46)]', props?.className)}
     />
   ),
   actionDropdownIcon: (props: { className?: string }) => (
     <Settings
       {...props}
-      className={cn('text-[rgba(255,255,255,0.46)]', props?.className)}
+      className={cn('re:text-[rgba(255,255,255,0.46)]', props?.className)}
     />
   ),
 };

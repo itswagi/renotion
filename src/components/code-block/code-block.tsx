@@ -20,8 +20,8 @@ export default function CodeBlock({
   }
 
   return (
-    <div className={cn('relative', props.className)}>
-      <div className="absolute text-xs text-[#858585] mt-2 ml-4">
+    <div className={cn('re:relative', props.className)}>
+      <div className="re:absolute re:text-xs re:text-[#858585] re:mt-2 re:ml-4">
         {detectedLang}
       </div>
       <Highlight
@@ -31,7 +31,7 @@ export default function CodeBlock({
       >
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
-            className="bg-[rgb(23,23,23)]! rounded-2xl!"
+            className="re:bg-[rgb(23,23,23)]! re:rounded-2xl!"
             style={{
               ...style,
               padding: '32px 20px',
@@ -50,7 +50,9 @@ export default function CodeBlock({
         )}
       </Highlight>
       {caption && (
-        <div className="text-xs text-[#858585] mt-2 mb-5 pl-4">{caption}</div>
+        <div className="re:text-xs re:text-[#858585] re:mt-2 re:mb-5 re:pl-4">
+          {caption}
+        </div>
       )}
     </div>
   );

@@ -132,7 +132,7 @@ export const Renotion: React.FC<RenotionProps> = ({
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
     >
-      <components.editorWrapper className="editor--wrapper relative p-20">
+      <components.editorWrapper className="editor--wrapper re:relative re:p-20">
         <>
           <SortableContext
             items={flattenedIds}
@@ -149,7 +149,7 @@ export const Renotion: React.FC<RenotionProps> = ({
               />
             ) : null}
           </DragOverlay>
-          <div className="action--portal absolute top-0 left-0" />
+          <div className="action--portal re:absolute re:top-0 re:left-0" />
         </>
       </components.editorWrapper>
     </DndContext>

@@ -100,7 +100,7 @@ export const ActionWrapper: React.FC<{
   }, [id, lf]);
 
   return (
-    <div ref={blockRef} className="w-full">
+    <div ref={blockRef} className="re:w-full">
       {children}
 
       {showActions &&
@@ -108,14 +108,14 @@ export const ActionWrapper: React.FC<{
         coords &&
         createPortal(
           <div
-            className="absolute flex items-center justify-center transition-opacity duration-200 ease-out"
+            className="re:absolute re:flex re:items-center re:justify-center re:transition-opacity re:duration-200 re:ease-out"
             style={{ top: coords.top, left: coords.left }}
           >
-            <div className="h-6 flex items-center justify center shrink-0 grow-0">
+            <div className="re:h-6 re:flex re:items-center re:justify-center re:shrink-0 re:grow-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="px-1 py-1.5 rounded hover:bg-[rgba(255,255,255,0.055)] flex justify-center items-center grow-0 shrink-0 cursor-grab">
-                    <DropdownIcon className="w-[14px] h-[14px]" />
+                  <button className="re:px-1 re:py-1.5 re:rounded re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab">
+                    <DropdownIcon className="re:w-[14px] re:h-[14px]" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="left" align="center">
@@ -128,12 +128,12 @@ export const ActionWrapper: React.FC<{
                         Change Type
                       </DropdownMenuSubTrigger>
                       <DropdownMenuPortal>
-                        <DropdownMenuSubContent className="min-w-[220px] p-1">
+                        <DropdownMenuSubContent className="re:min-w-[220px] re:p-1">
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('paragraph')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Type />
                               </div>
                               <div>Text</div>
@@ -142,8 +142,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('heading1')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Heading1 />
                               </div>
                               <div>Heading 1</div>
@@ -152,8 +152,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('heading2')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Heading2 />
                               </div>
                               <div>Heading 2</div>
@@ -162,8 +162,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('heading3')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Heading3 />
                               </div>
                               <div>Heading 3</div>
@@ -172,8 +172,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('heading4')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Heading4 />
                               </div>
                               <div>Heading 4</div>
@@ -182,8 +182,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('heading5')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Heading5 />
                               </div>
                               <div>Heading 5</div>
@@ -192,8 +192,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('heading6')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Heading6 />
                               </div>
                               <div>Heading 6</div>
@@ -202,8 +202,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('listItemBulleted')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <List />
                               </div>
                               <div>Bullet List</div>
@@ -212,8 +212,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('listItemNumbered')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <ListOrdered />
                               </div>
                               <div>Numbered List</div>
@@ -222,8 +222,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('listItemTask')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <ListChecks />
                               </div>
                               <div>Todo List</div>
@@ -232,8 +232,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('blockquote')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <MessageSquareQuote />
                               </div>
                               <div>Quote</div>
@@ -242,8 +242,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('code')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <CodeXml />
                               </div>
                               <div>Code</div>
@@ -252,8 +252,8 @@ export const ActionWrapper: React.FC<{
                           <DropdownMenuItem
                             onClick={() => onChangeType?.('horizontal_rule')}
                           >
-                            <div className="flex gap-2 item-center px-1 text-sm ">
-                              <div className="shrink-0 grow-0 flex justify-center items-center w-5 h-5">
+                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
                                 <Minus />
                               </div>
                               <div>Divider</div>
@@ -271,9 +271,9 @@ export const ActionWrapper: React.FC<{
                 {...listeners}
                 {...attributes}
                 ref={setActivatorNodeRef}
-                className="px-1 py-1.5 rounded hover:bg-[rgba(255,255,255,0.055)] flex justify-center items-center grow-0 shrink-0 cursor-grab"
+                className="re:px-1 re:py-1.5 re:rounded re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab"
               >
-                <DragIcon className="w-[14px] h-[14px]" />
+                <DragIcon className="re:w-[14px] re:h-[14px]" />
               </button>
             </div>
           </div>,

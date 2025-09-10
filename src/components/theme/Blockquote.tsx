@@ -8,7 +8,7 @@ export const BlockquoteWrapper: React.FC<{
     <div
       data-block-idx={i}
       key={i}
-      className="border-l-[3px] border-[rgba(255,255,255,0.81)] w-full px-3.5"
+      className="re:border-l-[3px] re:border-[rgba(255,255,255,0.81)] re:w-full re:px-3.5"
     >
       {children}
     </div>
@@ -23,9 +23,10 @@ export const BlockquoteItem: React.FC<{
     <div
       {...props}
       className={cn(
-        'w-full py-1 focus-visible:outline-none',
+        're:w-full re:py-1 re:focus-visible:outline-none',
         {
-          'border-l-[3px] border-[rgba(255,255,255,0.81)] px-3.5 ': level > 1,
+          're:border-l-[3px] re:border-[rgba(255,255,255,0.81)] re:px-3.5 ':
+            level > 1,
         },
         className,
       )}

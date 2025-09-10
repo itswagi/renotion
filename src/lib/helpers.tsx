@@ -621,11 +621,12 @@ export function richTextToHTML(richTexts: RichText[], key: string) {
         <span
           key={`${key}-${i}`}
           className={cn({
-            'font-bold': rt.annotations.bold,
+            're:font-bold': rt.annotations.bold,
             italic: rt.annotations.italic,
-            'line-through': rt.annotations.strikethrough,
+            're:line-through': rt.annotations.strikethrough,
             underline: rt.annotations.underline,
-            'code font-mono bg-muted px-1 rounded': rt.annotations.code,
+            're:code re:font-mono re:bg-muted re:px-1 re:rounded':
+              rt.annotations.code,
           })}
         >
           {rt.text}
@@ -637,7 +638,7 @@ export function richTextToHTML(richTexts: RichText[], key: string) {
           key={`${key}-${i}`}
           src={rt.image.url}
           alt={rt.image.alt || ''}
-          className="max-w-full h-auto"
+          className="re:max-w-full re:h-auto"
         />,
       );
     } else if (rt.link) {
@@ -645,7 +646,7 @@ export function richTextToHTML(richTexts: RichText[], key: string) {
         <a
           key={`${key}-${i}`}
           href={rt.link.href}
-          className="text-blue-500 underline"
+          className="re:text-blue-500 re:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -758,7 +759,7 @@ export function markdownToBlock({
                   rich_text={block.rich_text}
                   dragRef={ref}
                   {...props}
-                  className={cn(props.className, 'opacity-20')}
+                  className={cn(props.className, 're:opacity-20')}
                 />
               );
             }
@@ -793,7 +794,7 @@ export function markdownToBlock({
                   rich_text={block.rich_text}
                   dragRef={ref}
                   {...props}
-                  className={cn(props.className, 'opacity-20')}
+                  className={cn(props.className, 're:opacity-20')}
                 />
               );
             }
@@ -828,7 +829,7 @@ export function markdownToBlock({
                   rich_text={block.rich_text}
                   dragRef={ref}
                   {...props}
-                  className={cn(props.className, 'opacity-20')}
+                  className={cn(props.className, 're:opacity-20')}
                 />
               );
             }
@@ -863,7 +864,7 @@ export function markdownToBlock({
                   rich_text={block.rich_text}
                   dragRef={ref}
                   {...props}
-                  className={cn(props.className, 'opacity-20')}
+                  className={cn(props.className, 're:opacity-20')}
                 />
               );
             }
@@ -898,7 +899,7 @@ export function markdownToBlock({
                   rich_text={block.rich_text}
                   dragRef={ref}
                   {...props}
-                  className={cn(props.className, 'opacity-20')}
+                  className={cn(props.className, 're:opacity-20')}
                 />
               );
             }
@@ -933,7 +934,7 @@ export function markdownToBlock({
                   rich_text={block.rich_text}
                   dragRef={ref}
                   {...props}
-                  className={cn(props.className, 'opacity-20')}
+                  className={cn(props.className, 're:opacity-20')}
                 />
               );
             }
@@ -992,7 +993,7 @@ export function markdownToBlock({
               blockIdx={block.id}
               rich_text={block.rich_text}
               {...props}
-              className={cn(props.className, 'opacity-20')}
+              className={cn(props.className, 're:opacity-20')}
             />
           );
         }
@@ -1037,7 +1038,7 @@ export function markdownToBlock({
               }
               rich_text={block.rich_text}
               {...props}
-              className={cn(props.className, 'opacity-20')}
+              className={cn(props.className, 're:opacity-20')}
               Component={ListItem}
             />
           );
@@ -1078,7 +1079,7 @@ export function markdownToBlock({
               Component={CodeBlock}
               code={block.rich_text[0]?.text || ''}
               {...props}
-              className={cn(props.className, 'opacity-20')}
+              className={cn(props.className, 're:opacity-20')}
             />
           );
         }
@@ -1111,7 +1112,7 @@ export function markdownToBlock({
               blockIdx={block.id}
               rich_text={block.rich_text}
               ref={ref}
-              className="opacity-20"
+              className="re:opacity-20"
               {...props}
             />
           );
