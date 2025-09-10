@@ -1,0 +1,5 @@
+---
+'renotion': patch
+---
+
+minor fixes
