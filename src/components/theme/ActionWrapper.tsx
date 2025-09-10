@@ -27,7 +27,7 @@ import {
   Minus,
   Type,
 } from 'lucide-react/icons';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ConvertBlockToType, ParsedMarkdown } from '../../lib';
 import { getHoverManager } from '../../lib';
@@ -64,6 +64,29 @@ export const ActionWrapper: React.FC<{
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(
     null,
   );
+  const lastRect = useRef<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  // Helper to recalculate and set coordinates
+  const recalcCoords = useCallback(() => {
+    if (!blockRef.current) return;
+    const parent = document.querySelector('.editor--wrapper') as HTMLElement;
+    if (!parent) return;
+    const parentRect = parent.getBoundingClientRect();
+    const { top: parentTop, left: parentLeft } = parentRect;
+    const rect = blockRef.current.getBoundingClientRect();
+    const leftOffset = 50;
+    const topOffset = (rect.height - 24) / 2;
+    setCoords({
+      top: rect.top - parentTop + topOffset,
+      left: rect.left - parentLeft - leftOffset + lf,
+    });
+    lastRect.current = rect;
+  }, [lf]);
 
   useEffect(() => {
     const hoverManager = getHoverManager();
@@ -76,28 +99,35 @@ export const ActionWrapper: React.FC<{
       setActive: (active) => {
         setShowActions(active);
         if (active) {
-          if (!blockRef.current) return;
-          const parent = document.querySelector(
-            '.editor--wrapper',
-          ) as HTMLElement;
-          if (!parent) return;
-          const parentRect = parent.getBoundingClientRect();
-          const { top: parentTop, left: parentLeft } = parentRect;
-          const rect = blockRef.current.getBoundingClientRect();
-          const leftOffset = 50;
-          const topOffset = (rect.height - 24) / 2;
-          setCoords({
-            top: rect.top - parentTop + topOffset,
-            left: rect.left - parentLeft - leftOffset + lf,
-          });
+          recalcCoords();
         }
       },
     });
 
+    // Listen for DOM changes to force recalc after drag/drop
+    let animationFrame: number;
+    let prevRect = blockRef.current.getBoundingClientRect();
+    const checkRect = () => {
+      if (!blockRef.current) return;
+      const rect = blockRef.current.getBoundingClientRect();
+      if (
+        rect.top !== prevRect.top ||
+        rect.left !== prevRect.left ||
+        rect.width !== prevRect.width ||
+        rect.height !== prevRect.height
+      ) {
+        prevRect = rect;
+        if (showActions) recalcCoords();
+      }
+      animationFrame = requestAnimationFrame(checkRect);
+    };
+    animationFrame = requestAnimationFrame(checkRect);
+
     return () => {
       hoverManager.unregisterBlock(hoverId);
+      cancelAnimationFrame(animationFrame);
     };
-  }, [id, lf]);
+  }, [id, lf, recalcCoords, showActions]);
 
   return (
     <div ref={blockRef} className="re:w-full">
