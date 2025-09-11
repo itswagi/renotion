@@ -1,1 +1,14 @@
+/* Tailwind base, but scoped only to .editor--wrapper */
+@layer base {
+  .editor--wrapper {
+    all: revert; /* resets browser defaults inside wrapper */
+  }
+
+  .editor--wrapper * {
+    all: unset; /* clear inherited browser styles */
+    all: revert-layer; /* keep Tailwind base styles */
+  }
+}
+
+/* Now import Tailwind with prefix */
 @import 'tailwindcss' prefix(re);

@@ -1,0 +1,13 @@
+// tsconfig.build.json
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": ["playground", "dist", "node_modules", "**/*.test.*"]
+}

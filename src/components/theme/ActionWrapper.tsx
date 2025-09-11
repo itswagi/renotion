@@ -144,7 +144,7 @@ export const ActionWrapper: React.FC<{
             <div className="re:h-6 re:flex re:items-center re:justify-center re:shrink-0 re:grow-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="re:px-1 re:py-1.5 re:rounded re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab">
+                  <button className="re:px-1 re:py-1.5 re:rounded re:bg-transparent re:border-none re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab">
                     <DropdownIcon className="re:w-[14px] re:h-[14px]" />
                   </button>
                 </DropdownMenuTrigger>
@@ -301,7 +301,7 @@ export const ActionWrapper: React.FC<{
                 {...listeners}
                 {...attributes}
                 ref={setActivatorNodeRef}
-                className="re:px-1 re:py-1.5 re:rounded re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab"
+                className="re:px-1 re:py-1.5 re:rounded re:bg-transparent re:border-none re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab"
               >
                 <DragIcon className="re:w-[14px] re:h-[14px]" />
               </button>

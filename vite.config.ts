@@ -11,6 +11,7 @@ import dts from 'vite-plugin-dts';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ command }) => {
+  console.log('Vite command:', command);
   if (command === 'serve') {
     // 👨‍💻 Playground mode
     return {
@@ -41,7 +42,7 @@ export default defineConfig(({ command }) => {
     plugins: [
       react(),
       dts({
-        tsconfigPath: './tsconfig.app.json',
+        tsconfigPath: './tsconfig.build.json', // 👈 use build-only config
         insertTypesEntry: true,
         outDir: 'dist',
         include: ['src'],
