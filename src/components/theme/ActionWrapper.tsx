@@ -32,6 +32,26 @@ import { createPortal } from 'react-dom';
 import type { ConvertBlockToType, ParsedMarkdown } from '../../lib';
 import { getHoverManager } from '../../lib';
 
+const changeTypeItems: {
+  type: ConvertBlockToType;
+  label: string;
+  icon: React.FC<{ className?: string }>;
+}[] = [
+  { type: 'paragraph', label: 'Text', icon: Type },
+  { type: 'heading1', label: 'Heading 1', icon: Heading1 },
+  { type: 'heading2', label: 'Heading 2', icon: Heading2 },
+  { type: 'heading3', label: 'Heading 3', icon: Heading3 },
+  { type: 'heading4', label: 'Heading 4', icon: Heading4 },
+  { type: 'heading5', label: 'Heading 5', icon: Heading5 },
+  { type: 'heading6', label: 'Heading 6', icon: Heading6 },
+  { type: 'listItemBulleted', label: 'Bullet List', icon: List },
+  { type: 'listItemNumbered', label: 'Numbered List', icon: ListOrdered },
+  { type: 'listItemTask', label: 'Todo List', icon: ListChecks },
+  { type: 'blockquote', label: 'Quote', icon: MessageSquareQuote },
+  { type: 'code', label: 'Code', icon: CodeXml },
+  { type: 'horizontal_rule', label: 'Divider', icon: Minus },
+];
+
 export const ActionWrapper: React.FC<{
   id: string;
   leftOffset?: number;
@@ -130,7 +150,7 @@ export const ActionWrapper: React.FC<{
   }, [id, lf, recalcCoords, showActions]);
 
   return (
-    <div ref={blockRef} className="re:w-full">
+    <div ref={blockRef} className="renotion-actions re:w-full">
       {children}
 
       {showActions &&
@@ -141,7 +161,7 @@ export const ActionWrapper: React.FC<{
             className="re:absolute re:flex re:items-center re:justify-center re:transition-opacity re:duration-200 re:ease-out"
             style={{ top: coords.top, left: coords.left }}
           >
-            <div className="re:h-6 re:flex re:items-center re:justify-center re:shrink-0 re:grow-0">
+            <div className="renotion-actions-dropdown-wrapper re:h-6 re:flex re:items-center re:justify-center re:shrink-0 re:grow-0">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="re:px-1 re:py-1.5 re:rounded re:bg-transparent re:border-none re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-grab">
@@ -159,136 +179,21 @@ export const ActionWrapper: React.FC<{
                       </DropdownMenuSubTrigger>
                       <DropdownMenuPortal>
                         <DropdownMenuSubContent className="re:min-w-[220px] re:p-1">
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('paragraph')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Type />
-                              </div>
-                              <div>Text</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('heading1')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Heading1 />
-                              </div>
-                              <div>Heading 1</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('heading2')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Heading2 />
-                              </div>
-                              <div>Heading 2</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('heading3')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Heading3 />
-                              </div>
-                              <div>Heading 3</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('heading4')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Heading4 />
-                              </div>
-                              <div>Heading 4</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('heading5')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Heading5 />
-                              </div>
-                              <div>Heading 5</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('heading6')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Heading6 />
-                              </div>
-                              <div>Heading 6</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('listItemBulleted')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <List />
-                              </div>
-                              <div>Bullet List</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('listItemNumbered')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <ListOrdered />
-                              </div>
-                              <div>Numbered List</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('listItemTask')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <ListChecks />
-                              </div>
-                              <div>Todo List</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('blockquote')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <MessageSquareQuote />
-                              </div>
-                              <div>Quote</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('code')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <CodeXml />
-                              </div>
-                              <div>Code</div>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => onChangeType?.('horizontal_rule')}
-                          >
-                            <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
-                              <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
-                                <Minus />
-                              </div>
-                              <div>Divider</div>
-                            </div>
-                          </DropdownMenuItem>
+                          {changeTypeItems.map(
+                            ({ type, label, icon: Type }) => (
+                              <DropdownMenuItem
+                                key={type}
+                                onClick={() => onChangeType?.(type as any)}
+                              >
+                                <div className="re:flex re:gap-2 re:item-center re:px-1 re:text-sm">
+                                  <div className="re:shrink-0 re:grow-0 re:flex re:justify-center re:items-center re:w-5 re:h-5">
+                                    <Type />
+                                  </div>
+                                  <div>{label}</div>
+                                </div>
+                              </DropdownMenuItem>
+                            ),
+                          )}
                         </DropdownMenuSubContent>
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
@@ -296,7 +201,7 @@ export const ActionWrapper: React.FC<{
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div>
+            <div className="renotion-actions-dnd re:h-6 re:flex re:items-center re:justify-center re:shrink-0 re:grow-0">
               <button
                 {...listeners}
                 {...attributes}

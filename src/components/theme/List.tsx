@@ -5,7 +5,7 @@ export const ListWrapper: React.FC<{
   children: React.ReactNode;
 }> = ({ blockIdx: i, children }) => {
   return (
-    <div data-block-idx={i} key={i} className="re:w-full">
+    <div data-block-idx={i} key={i} className="renotion-list-wrapper re:w-full">
       {children}
     </div>
   );
@@ -21,7 +21,9 @@ export const ListItem: React.FC<{
 }> = ({ level, blockIdx, type, checked, numbering, className, ...props }) => {
   return (
     <div
-      className={cn(`re:w-full re:my-[1px]`)}
+      className={cn(
+        `renotion-list-${type} renotion-list-${level} re:w-full re:my-[1px]`,
+      )}
       style={{
         ...(level > 0 && {
           marginInlineStart: `${level * 24}px`,

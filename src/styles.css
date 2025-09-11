@@ -1,10 +1,10 @@
-/* Tailwind base, but scoped only to .editor--wrapper */
+/* Tailwind base, but scoped only to .renotion */
 @layer base {
-  .editor--wrapper {
+  .renotion {
     all: revert; /* resets browser defaults inside wrapper */
   }
 
-  .editor--wrapper * {
+  .renotion * {
     all: unset; /* clear inherited browser styles */
     all: revert-layer; /* keep Tailwind base styles */
   }

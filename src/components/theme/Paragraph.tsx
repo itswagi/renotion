@@ -7,7 +7,7 @@ export const Paragraph: React.FC<{
     <div
       {...props}
       className={cn(
-        're:w-full re:whitespace-break-spaces re:break-words re:py-[3px] re:px-0.5 re:focus-visible:outline-none',
+        'renotion-paragraph re:w-full re:whitespace-break-spaces re:break-words re:py-[3px] re:px-0.5 re:focus-visible:outline-none',
         className,
       )}
     />

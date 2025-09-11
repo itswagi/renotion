@@ -7,7 +7,10 @@ export const Heading3Wrapper: React.FC<WrapperProps> = ({
 }) => {
   return (
     <div
-      className={cn('re:w-full re:mt-[1em] re:mb-[1px]', className)}
+      className={cn(
+        'renotion-heading3-wrapper re:w-full re:mt-[1em] re:mb-[1px]',
+        className,
+      )}
       {...props}
     >
       {props.children}
@@ -21,7 +24,7 @@ export const Heading3: React.FC<{
   return (
     <h3
       className={cn(
-        're:w-full re:whitespace-break-spaces re:break-words re:py-[3px] re:px-0.5 re:m-0 re:font-semibold re:text-xl re:leading-[1.3] re:focus-visible:outline-none',
+        'renotion-heading3 re:w-full re:whitespace-break-spaces re:break-words re:py-[3px] re:px-0.5 re:m-0 re:font-semibold re:text-xl re:leading-[1.3] re:focus-visible:outline-none',
         className,
       )}
       {...props}

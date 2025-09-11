@@ -132,7 +132,7 @@ export const Renotion: React.FC<RenotionProps> = ({
       onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
     >
-      <components.editorWrapper className="editor--wrapper re:relative re:p-20">
+      <components.editorWrapper className="renotion re:relative re:p-20">
         <>
           <SortableContext
             items={flattenedIds}
