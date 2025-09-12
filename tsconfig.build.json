@@ -1,13 +1,47 @@
-// tsconfig.build.json
 {
-  "extends": "./tsconfig.app.json",
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
     "noEmit": false,
     "emitDeclarationOnly": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "renotion": ["./lib"],
+      "@/*": ["./lib/*"]
+    },
+    "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist"
   },
-  "include": ["src"],
-  "exclude": ["playground", "dist", "node_modules", "**/*.test.*"]
+  "include": ["lib"],
+  "exclude": [
+    "playground",
+    "dist",
+    "node_modules",
+    "**/*.test.*",
+    "**/*.spec.*",
+    ".storybook",
+    "lib/**/*.stories.*",
+    "**/stories/**",
+    "vitest.setup.*"
+  ]
 }

@@ -23,12 +23,13 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "renotion": ["./src"]
+      "renotion": ["./lib"],
+      "@/*": ["./lib/*"]
     },
     "baseUrl": ".",
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["playground", "src"],
+  "include": ["playground", "lib"],
   "exclude": ["node_modules", "dist"]
 }

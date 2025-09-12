@@ -1,2 +1,2 @@
-@source '../src';
-@import '../src/styles.css';
+@source '../lib';
+@import '../lib/styles.css';

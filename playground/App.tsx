@@ -1,5 +1,5 @@
 import './index.css';
-import { Renotion } from '../src';
+import { Renotion } from '../lib';
 
 import { kitchenSinkMarkdown } from './constants';
 

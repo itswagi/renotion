@@ -2,16 +2,16 @@
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { dirname, resolve } from 'node:path';
+import path, { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
+// import { visualizer } from 'rollup-plugin-visualizer';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ command }) => {
-  console.log('Vite command:', command);
   if (command === 'serve') {
     // 👨‍💻 Playground mode
     return {
@@ -25,6 +25,7 @@ export default defineConfig(({ command }) => {
               import.meta.url,
             ),
           ),
+          '@': path.resolve(__dirname, './lib'),
         },
       },
       test: {
@@ -32,7 +33,7 @@ export default defineConfig(({ command }) => {
         globals: true,
         environment: 'jsdom',
         setupFiles: './vitest.setup.ts',
-        include: ['src/**/*.test.{ts,tsx}'],
+        include: ['lib/**/*.test.{ts,tsx}'],
       },
     };
   }
@@ -45,33 +46,49 @@ export default defineConfig(({ command }) => {
         tsconfigPath: './tsconfig.build.json', // 👈 use build-only config
         insertTypesEntry: true,
         outDir: 'dist',
-        include: ['src'],
-        exclude: ['playground', '**/*.test.*'],
-        entryRoot: 'src',
+        include: ['lib'],
+        exclude: [
+          'playground',
+          '**/*.test.*',
+          'lib/**/*.stories.*',
+          '**/stories/**',
+          '.storybook',
+        ],
+        entryRoot: 'lib',
       }),
       tailwindcss(),
       cssInjectedByJsPlugin(),
+      // visualizer({ open: true }),
     ],
     test: {
       // ✅ Vitest config for library build mode
       globals: true,
       environment: 'jsdom',
       setupFiles: './vitest.setup.ts',
-      include: ['src/**/*.test.{ts,tsx}'],
+      include: ['lib/**/*.test.{ts,tsx}'],
     },
     build: {
       lib: {
-        entry: resolve(__dirname, 'src/index.ts'),
+        entry: resolve(__dirname, 'lib/index.ts'),
         name: 'Renotion',
         formats: ['es', 'cjs'],
         fileName: (format) => `renotion.${format}.js`,
       },
       rollupOptions: {
-        external: ['react', 'react-dom'],
+        external: [
+          'react',
+          'react-dom',
+          'react-dom/server',
+          'react/jsx-runtime',
+          'react-jsx',
+        ],
         output: {
           globals: {
             react: 'React',
             'react-dom': 'ReactDOM',
+            'react-dom/server': 'ReactDOMServer',
+            'react/jsx-runtime': 'jsxRuntime',
+            'react-jsx': 'jsxRuntime',
           },
         },
       },
@@ -84,6 +101,7 @@ export default defineConfig(({ command }) => {
             import.meta.url,
           ),
         ),
+        '@': path.resolve(__dirname, './lib'),
       },
     },
   };
