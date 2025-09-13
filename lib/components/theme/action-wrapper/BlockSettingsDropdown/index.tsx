@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu';
 import { changeTypeItems } from '../constants';
-import type { BlockType } from '@/lib';
 import { Check, ChevronRight, Repeat2 } from 'lucide-react/icons';
+import type { BlockType } from '../../../../lib';
 
 type Props = {
   blockType?: string;

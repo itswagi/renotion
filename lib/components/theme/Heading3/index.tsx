@@ -1,4 +1,4 @@
-import { cn } from '@/lib';
+import { cn } from '../../../lib';
 import type { WrapperProps } from '../types';
 
 export const Heading3Wrapper: React.FC<WrapperProps> = ({

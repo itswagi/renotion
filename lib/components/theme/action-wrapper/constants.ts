@@ -1,4 +1,4 @@
-import type { BlockType } from 'lib/lib';
+import type { BlockType } from '../../../lib';
 import {
   CodeXml,
   Heading1,

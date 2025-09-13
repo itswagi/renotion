@@ -1,47 +1,45 @@
 {
+  "extends": [],
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": false,
-    "emitDeclarationOnly": true,
+    "types": ["vite/client"],
+    "noEmit": true,
+    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "paths": {
-      "renotion": ["./lib"],
-      "@/*": ["./lib/*"]
-    },
-    "baseUrl": ".",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
-    "outDir": "dist"
+    "allowJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "useDefineForClassFields": true,
+
+    // Type-checking options
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true
   },
-  "include": ["lib"],
+  "include": ["./lib/**/*.ts", "./lib/**/*.tsx"],
   "exclude": [
-    "playground",
-    "dist",
+    "./lib/**/*.stories.*",
+    "./lib/**/*.test.*",
     "node_modules",
-    "**/*.test.*",
-    "**/*.spec.*",
-    ".storybook",
-    "lib/**/*.stories.*",
-    "**/stories/**",
-    "vitest.setup.*"
+    "dist",
+    "playground",
+    ".storybook"
   ]
 }

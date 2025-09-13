@@ -1,8 +1,8 @@
 // Replace your-framework with the framework you are using, e.g. react-vite, nextjs, nextjs-vite, etc.
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { defaultTheme } from '@/components/theme/utils';
-import type { BlockType, ParsedMarkdown } from '@/lib';
+import { defaultTheme } from '../../theme';
+import type { BlockType, ParsedMarkdown } from '../../../lib';
 import { ActionWrapper } from '.';
 
 // Mock getHoverManager to always activate on mouse enter

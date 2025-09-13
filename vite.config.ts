@@ -2,12 +2,13 @@
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import path, { dirname, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+// import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
-// import { visualizer } from 'rollup-plugin-visualizer';
+import { peerDependencies } from './package.json';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -25,7 +26,6 @@ export default defineConfig(({ command }) => {
               import.meta.url,
             ),
           ),
-          '@': path.resolve(__dirname, './lib'),
         },
       },
       test: {
@@ -42,56 +42,36 @@ export default defineConfig(({ command }) => {
   return {
     plugins: [
       react(),
-      dts({
-        tsconfigPath: './tsconfig.build.json', // 👈 use build-only config
-        insertTypesEntry: true,
-        outDir: 'dist',
-        include: ['lib'],
-        exclude: [
-          'playground',
-          '**/*.test.*',
-          'lib/**/*.stories.*',
-          '**/stories/**',
-          '.storybook',
-        ],
-        entryRoot: 'lib',
-      }),
       tailwindcss(),
       cssInjectedByJsPlugin(),
+      dts({
+        tsconfigPath: './tsconfig.build.json', // 👈 use build-only config
+        rollupTypes: true,
+      }),
       // visualizer({ open: true }),
     ],
+    build: {
+      target: 'esnext',
+      lib: {
+        entry: resolve(__dirname, join('lib', 'index.ts')),
+        formats: ['es', 'cjs'],
+        fileName: 'index',
+      },
+      rollupOptions: {
+        external: [
+          'react-dom/server',
+          'react/jsx-runtime',
+          'react-jsx',
+          ...Object.keys(peerDependencies),
+        ],
+      },
+    },
     test: {
       // ✅ Vitest config for library build mode
       globals: true,
       environment: 'jsdom',
       setupFiles: './vitest.setup.ts',
       include: ['lib/**/*.test.{ts,tsx}'],
-    },
-    build: {
-      lib: {
-        entry: resolve(__dirname, 'lib/index.ts'),
-        name: 'Renotion',
-        formats: ['es', 'cjs'],
-        fileName: (format) => `renotion.${format}.js`,
-      },
-      rollupOptions: {
-        external: [
-          'react',
-          'react-dom',
-          'react-dom/server',
-          'react/jsx-runtime',
-          'react-jsx',
-        ],
-        output: {
-          globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
-            'react-dom/server': 'ReactDOMServer',
-            'react/jsx-runtime': 'jsxRuntime',
-            'react-jsx': 'jsxRuntime',
-          },
-        },
-      },
     },
     resolve: {
       alias: {
@@ -101,7 +81,6 @@ export default defineConfig(({ command }) => {
             import.meta.url,
           ),
         ),
-        '@': path.resolve(__dirname, './lib'),
       },
     },
   };

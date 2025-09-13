@@ -1,4 +1,5 @@
-import { getHoverManager } from '@/lib';
+/* eslint-disable prefer-const */
+import { getHoverManager } from '../../../lib';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type HookArgs = {

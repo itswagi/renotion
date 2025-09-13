@@ -5,7 +5,7 @@ import {
   ThemeComponent,
   ListItem,
   Paragraph,
-} from '@/components';
+} from '../components';
 import type { Theme } from '../components/theme/utils';
 import type {
   BlockquoteChild,
@@ -618,7 +618,7 @@ export function removedFromStartLength(prev: string, curr: string): number {
 }
 
 export function richTextToHTML(richTexts: RichText[], key: string) {
-  const html = [];
+  const html: any[] = [];
   for (let i = 0; i < richTexts.length; i++) {
     const rt = richTexts[i]!;
     if (Object.values(rt.annotations).some((v) => v)) {
@@ -749,7 +749,7 @@ export function markdownToBlock({
   convertBlockType?: (id: string, type: BlockType) => void;
   components: Theme;
 }) {
-  const notionBlocks = [];
+  const notionBlocks: any[] = [];
 
   for (const block of parsed) {
     switch (block.type) {
