@@ -1,5 +1,11 @@
 # @devable/renotion
 
+## 1.2.7
+
+### Patch Changes
+
+- 6c623ae: fixed duplicate react error, added classnames, build size optimization
+
 ## 1.2.6
 
 ### Patch Changes
