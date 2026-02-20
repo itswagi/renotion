@@ -12,7 +12,7 @@ import {
 } from '@radix-ui/react-dropdown-menu';
 import { changeTypeItems } from '../constants';
 import { Check, ChevronRight, Repeat2 } from 'lucide-react/icons';
-import type { BlockType } from '../../../../lib';
+import { getHoverManager, type BlockType } from '../../../../lib';
 
 type Props = {
   blockType?: string;
@@ -28,7 +28,11 @@ export const BlockSettingsDropdown: React.FC<Props> = ({
   onChangeType,
 }) => {
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      onOpenChange={(open) => {
+        getHoverManager()?.setMenuOpen(open);
+      }}
+    >
       <DropdownMenuTrigger asChild>
         <button className="re:px-1 re:py-1.5 re:rounded re:bg-transparent re:border-none re:hover:bg-[rgba(255,255,255,0.055)] re:flex re:justify-center re:items-center re:grow-0 re:shrink-0 re:cursor-pointer re:focus-visible:border-none re:focus-visible:outline-none">
           <DropdownIcon className="re:w-[14px] re:h-[14px]" />

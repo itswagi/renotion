@@ -10,6 +10,7 @@ class HoverManager {
   rafPending = false;
   activeBlockId: string | null = null;
   hoverManagerId: number | null = null;
+  menuOpen = false;
 
   constructor(hoverManagerId: number) {
     if (typeof window !== 'undefined') {
@@ -42,25 +43,8 @@ class HoverManager {
     requestAnimationFrame(this.evaluate);
   };
 
-  isMouseOverActionButtons = (): boolean => {
-    if (!this.lastMouse) return false;
-
-    // Check if mouse is over any visible action buttons
-    const actionMenus = document.querySelectorAll('[data-state="open"]');
-    for (const menu of actionMenus) {
-      const rect = menu.getBoundingClientRect();
-      // Add small buffer around the menu for better UX
-      const buffer = 5;
-      if (
-        this.lastMouse.x >= rect.left - buffer &&
-        this.lastMouse.x <= rect.right + buffer &&
-        this.lastMouse.y >= rect.top - buffer &&
-        this.lastMouse.y <= rect.bottom + buffer
-      ) {
-        return true;
-      }
-    }
-    return false;
+  setMenuOpen = (open: boolean) => {
+    this.menuOpen = open;
   };
 
   evaluate = () => {
@@ -70,9 +54,9 @@ class HoverManager {
     const { x, y } = this.lastMouse;
     let newActive: string | null = null;
 
-    // First check if mouse is over action buttons - if so, keep current active block
-    if (this.isMouseOverActionButtons() && this.activeBlockId) {
-      return; // Keep current state
+    // If a dropdown menu is open, keep current active block
+    if (this.menuOpen && this.activeBlockId) {
+      return;
     }
 
     for (const block of this.blocks.values()) {
@@ -114,8 +98,17 @@ class HoverManager {
 let hoverManager: HoverManager | null = null;
 export function getHoverManager() {
   if (typeof window === 'undefined') return null;
-  // generate a random 3-digit id
   const hoverManagerId = Math.floor(100 + Math.random() * 900);
   if (!hoverManager) hoverManager = new HoverManager(hoverManagerId);
   return hoverManager;
+}
+
+export function destroyHoverManager() {
+  if (hoverManager) {
+    window.removeEventListener('mousemove', hoverManager.handleMouseMove);
+    window.removeEventListener('scroll', hoverManager.requestEvaluate, true);
+    window.removeEventListener('resize', hoverManager.requestEvaluate);
+    hoverManager.blocks.clear();
+    hoverManager = null;
+  }
 }

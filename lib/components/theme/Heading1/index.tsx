@@ -1,26 +1,26 @@
+import { memo } from 'react';
 import { cn } from '../../../lib';
 import type { WrapperProps } from '../types';
 
-export const Heading1Wrapper: React.FC<WrapperProps> = ({
-  className,
-  ...props
-}) => {
-  return (
-    <div
-      className={cn(
-        'renotion-heading1-wrapper re:w-full re:mt-[2em] re:mb-1',
-        className,
-      )}
-      {...props}
-    >
-      {props.children}
-    </div>
-  );
-};
+export const Heading1Wrapper: React.FC<WrapperProps> = memo(
+  ({ className, ...props }) => {
+    return (
+      <div
+        className={cn(
+          'renotion-heading1-wrapper re:w-full re:mt-[2em] re:mb-1',
+          className,
+        )}
+        {...props}
+      >
+        {props.children}
+      </div>
+    );
+  },
+);
 
 export const Heading1: React.FC<{
   className?: string;
-}> = ({ className, ...props }) => {
+}> = memo(({ className, ...props }) => {
   return (
     <h1
       className={cn(
@@ -30,4 +30,4 @@ export const Heading1: React.FC<{
       {...props}
     />
   );
-};
+});

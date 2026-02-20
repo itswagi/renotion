@@ -1,3 +1,4 @@
+import type React from 'react';
 import { Fragment } from 'react/jsx-runtime';
 import {
   CodeBlock,
@@ -162,23 +163,37 @@ export const patterns = [
 export function parseHTMLToRichText(el: HTMLElement): RichText[] {
   const richText: RichText[] = [];
 
-  el.childNodes.forEach((node) => {
+  function traverse(
+    node: ChildNode,
+    inherited: RichText['annotations'],
+  ) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const subRichText = getRichText(node.textContent || '');
-      richText.push(...subRichText);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      // get element classes
-      const classes = Array.from((node as HTMLElement).classList);
+      const text = node.textContent || '';
+      if (text) {
+        richText.push({
+          text,
+          ...(inherited && { annotations: { ...inherited } }),
+        });
+      }
+      return;
+    }
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const elem = node as HTMLElement;
+      const classes = Array.from(elem.classList);
+      // Merge parent annotations with current element's annotations
       const annotations = {
-        bold: classes.includes('font-bold'),
-        italic: classes.includes('italic'),
-        strikethrough: classes.includes('line-through'),
-        underline: classes.includes('underline'),
-        code: classes.includes('code'),
+        bold: inherited?.bold || classes.includes('font-bold'),
+        italic: inherited?.italic || classes.includes('italic'),
+        strikethrough:
+          inherited?.strikethrough || classes.includes('line-through'),
+        underline: inherited?.underline || classes.includes('underline'),
+        code: inherited?.code || classes.includes('code'),
       };
-      if (node.nodeName.toLowerCase() === 'a') {
-        const href = (node as HTMLAnchorElement).getAttribute('href') || '';
-        const linkText = node.textContent || '';
+
+      if (elem.nodeName.toLowerCase() === 'a') {
+        const href = (elem as HTMLAnchorElement).getAttribute('href') || '';
+        const linkText = elem.textContent || '';
         richText.push({
           text: linkText,
           annotations,
@@ -186,9 +201,9 @@ export function parseHTMLToRichText(el: HTMLElement): RichText[] {
         });
         return;
       }
-      if (node.nodeName.toLowerCase() === 'img') {
-        const url = (node as HTMLImageElement).src;
-        const alt = (node as HTMLImageElement).alt;
+      if (elem.nodeName.toLowerCase() === 'img') {
+        const url = (elem as HTMLImageElement).src;
+        const alt = (elem as HTMLImageElement).alt;
         richText.push({
           text: '',
           annotations,
@@ -196,12 +211,15 @@ export function parseHTMLToRichText(el: HTMLElement): RichText[] {
         });
         return;
       }
-      return richText.push({
-        text: node.textContent || '',
-        annotations,
-      });
+
+      // Recurse into children, passing accumulated annotations
+      elem.childNodes.forEach((child) => traverse(child, annotations));
     }
-  });
+  }
+
+  el.childNodes.forEach((node) =>
+    traverse(node, undefined as unknown as RichText['annotations']),
+  );
 
   return richText;
 }
@@ -394,7 +412,7 @@ export function parseLine(
     const text = getHeadingText(line);
     return {
       block: {
-        id: index.toString(),
+        id: crypto.randomUUID(),
         type: 'heading',
         level,
         rich_text: getRichText(text),
@@ -434,10 +452,10 @@ export function parseLine(
         continue; // Skip empty blockquote lines
       }
       const child = {
-        type: 'blockquote' as any,
+        type: 'blockquote' as const,
         level: getBlockquoteLevel(lines[j]!),
         rich_text: getRichText(stripBlockquoteMarkers(lines[j]!)),
-        id: j.toString(),
+        id: crypto.randomUUID(),
       };
       children.push(child);
       j++;
@@ -454,7 +472,12 @@ export function parseLine(
     const language = line.slice(3).trim() || null;
     let j = index + 1;
     let codeContent = '';
-    while (j < lines.length && !lines[j]!.startsWith(fence)) {
+    let fenceClosed = false;
+    while (j < lines.length) {
+      if (lines[j]!.startsWith(fence)) {
+        fenceClosed = true;
+        break;
+      }
       codeContent += lines[j] + '\n';
       j++;
     }
@@ -464,12 +487,12 @@ export function parseLine(
     }
     return {
       block: {
-        id: index.toString(),
+        id: crypto.randomUUID(),
         type: 'code',
         rich_text: [{ text: codeContent }],
         language,
       },
-      consumed: j + 1 - index,
+      consumed: fenceClosed ? j + 1 - index : j - index,
     };
   }
 
@@ -491,7 +514,7 @@ export function parseLine(
     }
     return {
       block: {
-        id: index.toString(),
+        id: crypto.randomUUID(),
         type: 'code',
         rich_text: [{ text: codeContent }],
         language: null,
@@ -526,34 +549,37 @@ export function parseLine(
           checked = checkbox.toLowerCase() === 'x';
         }
 
-        const level = Math.floor(indent / 2); // assuming 2 spaces per indent
+        // Count tabs as 4 spaces for indent calculation
+        const rawIndent = match[1];
+        const expandedIndent = rawIndent.replace(/\t/g, '    ').length;
+        const level = Math.floor(expandedIndent / 2);
 
         if (format === 'task') {
           children.push({
-            type: 'listItem' as any,
+            type: 'listItem' as const,
             level,
             format,
             checked,
             rich_text: getRichText(text),
-            id: j.toString(),
+            id: crypto.randomUUID(),
           });
         } else if (format === 'ordered') {
           const numbering = parseInt(marker, 10); // ✅ fix here
           children.push({
-            type: 'listItem' as any,
+            type: 'listItem' as const,
             level,
             format,
             numbering,
             rich_text: getRichText(text),
-            id: j.toString(),
+            id: crypto.randomUUID(),
           });
         } else {
           children.push({
-            type: 'listItem' as any,
+            type: 'listItem' as const,
             level,
             format,
             rich_text: getRichText(text),
-            id: j.toString(),
+            id: crypto.randomUUID(),
           });
         }
       }
@@ -618,7 +644,7 @@ export function removedFromStartLength(prev: string, curr: string): number {
 }
 
 export function richTextToHTML(richTexts: RichText[], key: string) {
-  const html: any[] = [];
+  const html: React.ReactNode[] = [];
   for (let i = 0; i < richTexts.length; i++) {
     const rt = richTexts[i]!;
     if (Object.values(rt.annotations).some((v) => v)) {
@@ -695,7 +721,7 @@ export function convertBlocksToMarkdown(blocks: ParsedMarkdown[]) {
             .map((rt) => convertAnnotationsToMarkdown(rt))
             .join('')}\n\n`;
         case 'paragraph':
-          return `${block.rich_text.map((rt) => rt.text).join('')}\n\n`;
+          return `${block.rich_text.map((rt) => convertAnnotationsToMarkdown(rt)).join('')}\n\n`;
         case 'listItem': {
           const prefix =
             block.format === 'unordered'
@@ -706,12 +732,12 @@ export function convertBlocksToMarkdown(blocks: ParsedMarkdown[]) {
               ? `[${block.checked ? 'x' : ' '}] `
               : '';
           return `${'  '.repeat(block.level)}${prefix}${block.rich_text
-            .map((rt) => rt.text)
+            .map((rt) => convertAnnotationsToMarkdown(rt))
             .join('')}\n`;
         }
         case 'blockquote':
           return `${'> '.repeat(block.level)}${block.rich_text
-            .map((rt) => rt.text)
+            .map((rt) => convertAnnotationsToMarkdown(rt))
             .join('')}\n\n`;
         case 'code':
           return `\`\`\`\n${block.rich_text
@@ -749,224 +775,60 @@ export function markdownToBlock({
   convertBlockType?: (id: string, type: BlockType) => void;
   components: Theme;
 }) {
-  const notionBlocks: any[] = [];
+  const notionBlocks: React.ReactNode[] = [];
 
   for (const block of parsed) {
     switch (block.type) {
-      case 'heading':
-        switch (block.level) {
-          case 1:
-            if (isDragOverlay) {
-              return (
-                <ThemeComponent
-                  Component={theme.heading1}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  dragRef={ref}
-                  {...props}
-                  className={cn(props.className, 're:opacity-20')}
-                />
-              );
-            }
-            notionBlocks.push(
-              <SortableItem
-                key={block.id}
-                id={block.id}
-                Element={theme.heading1Wrapper}
-                blockType={block.type}
-                level={block.level}
-                onChangeType={(type) => convertBlockType?.(block.id, type)}
-                dragIcon={theme.actionDragIcon}
-                dropdownIcon={theme.actionDropdownIcon}
-              >
-                <ThemeComponent
-                  Component={theme.heading1}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  onChange={(updated: RichText[]) =>
-                    updateNode?.(updated, block.id)
-                  }
-                />
-              </SortableItem>,
-            );
-            break;
-          case 2:
-            if (isDragOverlay) {
-              return (
-                <ThemeComponent
-                  Component={theme.heading2}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  dragRef={ref}
-                  {...props}
-                  className={cn(props.className, 're:opacity-20')}
-                />
-              );
-            }
-            notionBlocks.push(
-              <SortableItem
-                key={block.id}
-                id={block.id}
-                Element={theme.heading2Wrapper}
-                blockType={block.type}
-                level={block.level}
-                onChangeType={(type) => convertBlockType?.(block.id, type)}
-                dragIcon={theme.actionDragIcon}
-                dropdownIcon={theme.actionDropdownIcon}
-              >
-                <ThemeComponent
-                  Component={theme.heading2}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  onChange={(updated: RichText[]) =>
-                    updateNode?.(updated, block.id)
-                  }
-                />
-              </SortableItem>,
-            );
-            break;
-          case 3:
-            if (isDragOverlay) {
-              return (
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  dragRef={ref}
-                  {...props}
-                  className={cn(props.className, 're:opacity-20')}
-                />
-              );
-            }
-            notionBlocks.push(
-              <SortableItem
-                key={block.id}
-                id={block.id}
-                Element={theme.heading3Wrapper}
-                blockType={block.type}
-                level={block.level}
-                onChangeType={(type) => convertBlockType?.(block.id, type)}
-                dragIcon={theme.actionDragIcon}
-                dropdownIcon={theme.actionDropdownIcon}
-              >
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  onChange={(updated: RichText[]) =>
-                    updateNode?.(updated, block.id)
-                  }
-                />
-              </SortableItem>,
-            );
-            break;
-          case 4:
-            if (isDragOverlay) {
-              return (
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  dragRef={ref}
-                  {...props}
-                  className={cn(props.className, 're:opacity-20')}
-                />
-              );
-            }
-            notionBlocks.push(
-              <SortableItem
-                key={block.id}
-                id={block.id}
-                Element={theme.heading3Wrapper}
-                blockType={block.type}
-                level={block.level}
-                onChangeType={(type) => convertBlockType?.(block.id, type)}
-                dragIcon={theme.actionDragIcon}
-                dropdownIcon={theme.actionDropdownIcon}
-              >
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  onChange={(updated: RichText[]) =>
-                    updateNode?.(updated, block.id)
-                  }
-                />
-              </SortableItem>,
-            );
-            break;
-          case 5:
-            if (isDragOverlay) {
-              return (
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  dragRef={ref}
-                  {...props}
-                  className={cn(props.className, 're:opacity-20')}
-                />
-              );
-            }
-            notionBlocks.push(
-              <SortableItem
-                key={block.id}
-                id={block.id}
-                Element={theme.heading3Wrapper}
-                blockType={block.type}
-                level={block.level}
-                onChangeType={(type) => convertBlockType?.(block.id, type)}
-                dragIcon={theme.actionDragIcon}
-                dropdownIcon={theme.actionDropdownIcon}
-              >
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  onChange={(updated: RichText[]) =>
-                    updateNode?.(updated, block.id)
-                  }
-                />
-              </SortableItem>,
-            );
-            break;
-          case 6:
-            if (isDragOverlay) {
-              return (
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  dragRef={ref}
-                  {...props}
-                  className={cn(props.className, 're:opacity-20')}
-                />
-              );
-            }
-            notionBlocks.push(
-              <SortableItem
-                key={block.id}
-                id={block.id}
-                Element={theme.heading3Wrapper}
-                blockType={block.type}
-                level={block.level}
-                onChangeType={(type) => convertBlockType?.(block.id, type)}
-                dragIcon={theme.actionDragIcon}
-                dropdownIcon={theme.actionDropdownIcon}
-              >
-                <ThemeComponent
-                  Component={theme.heading3}
-                  blockIdx={block.id}
-                  rich_text={block.rich_text}
-                  onChange={(updated: RichText[]) =>
-                    updateNode?.(updated, block.id)
-                  }
-                />
-              </SortableItem>,
-            );
-            break;
+      case 'heading': {
+        const headingMap: Record<
+          number,
+          { wrapper: keyof Theme; component: keyof Theme }
+        > = {
+          1: { wrapper: 'heading1Wrapper', component: 'heading1' },
+          2: { wrapper: 'heading2Wrapper', component: 'heading2' },
+          3: { wrapper: 'heading3Wrapper', component: 'heading3' },
+          4: { wrapper: 'heading4Wrapper', component: 'heading4' },
+          5: { wrapper: 'heading5Wrapper', component: 'heading5' },
+          6: { wrapper: 'heading6Wrapper', component: 'heading6' },
+        };
+        const keys = headingMap[block.level] ?? headingMap[3]!;
+        const HeadingComponent = theme[keys.component] as typeof theme.heading1;
+        const HeadingWrapper = theme[keys.wrapper] as typeof theme.heading1Wrapper;
+        if (isDragOverlay) {
+          return (
+            <ThemeComponent
+              Component={HeadingComponent}
+              blockIdx={block.id}
+              rich_text={block.rich_text}
+              dragRef={ref}
+              {...props}
+              className={cn(props?.className, 're:opacity-20')}
+            />
+          );
         }
+        notionBlocks.push(
+          <SortableItem
+            key={block.id}
+            id={block.id}
+            Element={HeadingWrapper}
+            blockType={block.type}
+            level={block.level}
+            onChangeType={(type) => convertBlockType?.(block.id, type)}
+            dragIcon={theme.actionDragIcon}
+            dropdownIcon={theme.actionDropdownIcon}
+          >
+            <ThemeComponent
+              Component={HeadingComponent}
+              blockIdx={block.id}
+              rich_text={block.rich_text}
+              onChange={(updated: RichText[]) =>
+                updateNode?.(updated, block.id)
+              }
+            />
+          </SortableItem>,
+        );
         break;
+      }
       case 'horizontal_rule':
         notionBlocks.push(
           <SortableItem
@@ -1148,68 +1010,42 @@ export function markdownToBlock({
   return notionBlocks;
 }
 
-export function blockToType(block: ParsedMarkdown, type: BlockType) {
+function getBlockRichText(block: ParsedMarkdown): RichText[] {
+  if ('rich_text' in block) {
+    return block.rich_text as RichText[];
+  }
+  return [];
+}
+
+export function blockToType(
+  block: ParsedMarkdown,
+  type: BlockType,
+): ParsedMarkdown | null {
   if (!block) return null;
+  const richText = getBlockRichText(block);
   switch (type) {
     case 'paragraph':
-      return {
-        id: block.id,
-        type: 'paragraph',
-        rich_text: (block as any)?.rich_text,
-      } as ParsedParagraph;
+      return { id: block.id, type: 'paragraph', rich_text: richText };
     case 'heading1':
-      return {
-        id: block.id,
-        type: 'heading',
-        level: 1,
-        rich_text: (block as any).rich_text,
-      };
+      return { id: block.id, type: 'heading', level: 1, rich_text: richText };
     case 'heading2':
-      return {
-        id: block.id,
-        type: 'heading',
-        level: 2,
-        rich_text: (block as any).rich_text,
-      };
+      return { id: block.id, type: 'heading', level: 2, rich_text: richText };
     case 'heading3':
-      return {
-        id: block.id,
-        type: 'heading',
-        level: 3,
-        rich_text: (block as any).rich_text,
-      };
+      return { id: block.id, type: 'heading', level: 3, rich_text: richText };
     case 'heading4':
-      return {
-        id: block.id,
-        type: 'heading',
-        level: 4,
-        rich_text: (block as any).rich_text,
-      };
+      return { id: block.id, type: 'heading', level: 4, rich_text: richText };
     case 'heading5':
-      return {
-        id: block.id,
-        type: 'heading',
-        level: 5,
-        rich_text: (block as any).rich_text,
-      };
+      return { id: block.id, type: 'heading', level: 5, rich_text: richText };
     case 'heading6':
-      return {
-        id: block.id,
-        type: 'heading',
-        level: 6,
-        rich_text: (block as any).rich_text,
-      };
+      return { id: block.id, type: 'heading', level: 6, rich_text: richText };
     case 'horizontal_rule':
-      return {
-        id: block.id,
-        type: 'horizontal_rule',
-      };
+      return { id: block.id, type: 'horizontal_rule' };
     case 'blockquote':
       return {
         id: block.id,
         type: 'blockquote',
         level: 1,
-        rich_text: (block as any).rich_text,
+        rich_text: richText,
       };
     case 'listItemBulleted':
       return {
@@ -1217,7 +1053,7 @@ export function blockToType(block: ParsedMarkdown, type: BlockType) {
         type: 'listItem',
         level: 1,
         format: 'unordered',
-        rich_text: (block as any).rich_text,
+        rich_text: richText,
       };
     case 'listItemNumbered':
       return {
@@ -1226,27 +1062,20 @@ export function blockToType(block: ParsedMarkdown, type: BlockType) {
         level: 1,
         format: 'ordered',
         numbering: 1,
-        rich_text: (block as any).rich_text,
+        rich_text: richText,
       };
     case 'listItemTask':
       return {
         id: block.id,
         type: 'listItem',
         level: 1,
-        format: 'ordered',
+        format: 'task',
         checked: false,
-        rich_text: (block as any).rich_text,
+        rich_text: richText,
       };
-
     case 'code':
-      return {
-        id: block.id,
-        type: 'code',
-        rich_text: (block as any).rich_text,
-      };
-
+      return { id: block.id, type: 'code', rich_text: richText, language: null };
     default:
-      break;
+      return null;
   }
-  return null;
 }

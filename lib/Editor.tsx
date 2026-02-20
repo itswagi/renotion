@@ -38,9 +38,13 @@ export const Renotion: React.FC<RenotionProps> = ({
     return defaultTheme;
   }, [theme]);
   // keep parsed markdown in state and recompute only when input changes
-  const [parsed, setParsed] = useState<ParsedMarkdown[]>(() =>
-    parseMarkdown(markdown),
-  );
+  const [parsed, setParsed] = useState<ParsedMarkdown[]>(() => {
+    try {
+      return parseMarkdown(markdown);
+    } catch {
+      return [];
+    }
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -66,20 +70,27 @@ export const Renotion: React.FC<RenotionProps> = ({
     [onChange],
   );
   const [activeId, setActiveId] = useState<string | null>(null);
-  const convertBlockType = useCallback((id: string, type: BlockType) => {
-    setParsed((prev) => {
-      const findBlock = prev.find((block) => block.id === id);
-      if (!findBlock) return prev;
-      // if the block is already of the desired type, return prev
-      if (findBlock.type === type) return prev;
-      // convert the block to the desired type
-      const convertedBlock = blockToType(findBlock, type);
-      const newParsed = prev.map((block) =>
-        block.id === id ? convertedBlock : block,
-      );
-      return newParsed as any;
-    });
-  }, []);
+  const convertBlockType = useCallback(
+    (id: string, type: BlockType) => {
+      setParsed((prev) => {
+        const findBlock = prev.find((block) => block.id === id);
+        if (!findBlock) return prev;
+        // if the block is already of the desired type, return prev
+        if (findBlock.type === type) return prev;
+        // convert the block to the desired type
+        const convertedBlock = blockToType(findBlock, type);
+        if (!convertedBlock) return prev;
+        const newParsed = prev.map((block) =>
+          block.id === id ? convertedBlock : block,
+        ) as ParsedMarkdown[];
+        if (onChange) {
+          onChange(convertBlocksToMarkdown(newParsed));
+        }
+        return newParsed;
+      });
+    },
+    [onChange],
+  );
   // memoize conversion to HTML blocks
   const htmlBlocks = useMemo(
     () => markdownToBlock({ parsed, updateNode, convertBlockType, components }),
@@ -93,10 +104,13 @@ export const Renotion: React.FC<RenotionProps> = ({
     } = event;
     if (over && id !== over.id) {
       setParsed((prev) => {
-        const oldIndex = parsed.findIndex((item) => item.id === id);
+        const oldIndex = prev.findIndex((item) => item.id === id);
         const newIndex = prev.findIndex((item) => item.id === over.id);
-
-        return arrayMove(prev, oldIndex, newIndex);
+        const newParsed = arrayMove(prev, oldIndex, newIndex);
+        if (onChange) {
+          onChange(convertBlocksToMarkdown(newParsed));
+        }
+        return newParsed;
       });
     }
     setActiveId(null);
@@ -119,7 +133,7 @@ export const Renotion: React.FC<RenotionProps> = ({
   }, [activeId, parsed]);
 
   const flattenedIds = useMemo(() => {
-    return parsed.map((block: any) => block.id);
+    return parsed.map((block) => block.id);
   }, [parsed]);
 
   return (
