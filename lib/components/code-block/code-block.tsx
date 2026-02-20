@@ -1,5 +1,3 @@
-import hljs from 'highlight.js/lib/common';
-import 'highlight.js/styles/atom-one-dark.css'; // Import a default style for syntax highlighting
 import { Highlight, themes } from 'prism-react-renderer';
 import { highlightToPrismMap } from './constants';
 import type { CodeBlockProps } from './types';
@@ -11,13 +9,10 @@ export default function CodeBlock({
   caption,
   ...props
 }: CodeBlockProps) {
-  // Detect language if not provided
-  let detectedLang = language;
-  if (!language) {
-    const detection = hljs.highlightAuto(code);
-    detectedLang =
-      highlightToPrismMap[detection.language || 'plaintext'] || 'plaintext';
-  }
+  // Use language from markdown fence, normalize via map, fallback to plaintext
+  const detectedLang = language
+    ? (highlightToPrismMap[language] || language)
+    : 'plaintext';
 
   return (
     <div className={cn('renotion-code-block re:relative', props.className)}>

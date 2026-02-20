@@ -1,15 +1,16 @@
+import { memo } from 'react';
 import { cn } from '../../../lib';
 
 export const ListWrapper: React.FC<{
   blockIdx: number;
   children: React.ReactNode;
-}> = ({ blockIdx: i, children }) => {
+}> = memo(({ blockIdx: i, children }) => {
   return (
     <div data-block-idx={i} key={i} className="renotion-list-wrapper re:w-full">
       {children}
     </div>
   );
-};
+});
 
 export const ListItem: React.FC<{
   level: number;
@@ -18,7 +19,7 @@ export const ListItem: React.FC<{
   checked?: boolean; // only for task lists
   blockIdx: string;
   className?: string;
-}> = ({ level, blockIdx, type, checked, numbering, className, ...props }) => {
+}> = memo(({ level, blockIdx, type, checked, numbering, className, ...props }) => {
   return (
     <div
       className={cn(
@@ -100,4 +101,4 @@ export const ListItem: React.FC<{
       </div>
     </div>
   );
-};
+});

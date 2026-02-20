@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import { cn } from '../../../lib';
 
 export const Paragraph: React.FC<{
   className?: string;
-}> = ({ className, ...props }) => {
+}> = memo(({ className, ...props }) => {
   return (
     <div
       {...props}
@@ -12,4 +13,4 @@ export const Paragraph: React.FC<{
       )}
     />
   );
-};
+});

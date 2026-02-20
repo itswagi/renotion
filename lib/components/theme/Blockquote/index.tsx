@@ -1,9 +1,10 @@
+import { memo } from 'react';
 import { cn } from '../../../lib';
 
 export const BlockquoteWrapper: React.FC<{
   blockIdx: number;
   children: React.ReactNode;
-}> = ({ blockIdx: i, children }) => {
+}> = memo(({ blockIdx: i, children }) => {
   return (
     <div
       data-block-idx={i}
@@ -13,12 +14,12 @@ export const BlockquoteWrapper: React.FC<{
       {children}
     </div>
   );
-};
+});
 
 export const BlockquoteItem: React.FC<{
   level: number;
   className?: string;
-}> = ({ level, className, ...props }) => {
+}> = memo(({ level, className, ...props }) => {
   return (
     <div
       {...props}
@@ -37,4 +38,4 @@ export const BlockquoteItem: React.FC<{
       }}
     />
   );
-};
+});
