@@ -12,6 +12,9 @@ description: >-
 
 Not after. Not retroactively. Not "next time." Before.
 
+**THE CREATED PLAN SHOULD BE THE TICKET DESCRIPTION.**
+The plan file is the ticket description. If a plan exists, put the plan contents in the the ticket description. If no plan exists, create a descriptive description of the ticket.
+
 ## Gate Function
 
 Every implementation request passes through this gate:
@@ -36,19 +39,19 @@ subtasks: [{ title: "..." }]                      // WRONG
 
 If you hear yourself thinking any of these, you are rationalizing. Stop and create the ticket.
 
-| Thought | Counter |
-|---------|---------|
-| "It's only N lines" | Ticket creation takes 30 seconds. The rule has no size threshold. |
-| "No time — demo/deadline soon" | 30 seconds for a ticket vs minutes of implementation. Time pressure is not a waiver. |
-| "I'll create tickets retroactively" | "Before writing code" means before. Retroactive tickets cannot shape scope. |
-| "The user said 'implement', not 'create tickets'" | CLAUDE.md is a standing instruction. User phrasing does not create exceptions. |
-| "The plan file IS the documentation" | Plans are not tickets. Tickets provide status tracking, board visibility, and audit trail. |
-| "Tickets would just duplicate the plan" | Then use `create_plan` with a detailed `description` — that's what the field is for. |
-| "I'm already 2 hours in / almost done" | Sunk cost. Stop now, ticket the remaining work. Past violation does not justify future violation. |
-| "User didn't ask for tickets" | They asked when they wrote CLAUDE.md. The rule is unconditional. |
-| "I'll do it right next time" | This IS next time. The rule applies now. |
-| "Retroactive tickets are busywork" | They still serve tracking, communication, and completion criteria. Create them. |
-| "Flow state — switching costs" | The rule exists precisely to prevent this trap. 30-second interruption, not a context switch. |
+| Thought                                           | Counter                                                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| "It's only N lines"                               | Ticket creation takes 30 seconds. The rule has no size threshold.                                 |
+| "No time — demo/deadline soon"                    | 30 seconds for a ticket vs minutes of implementation. Time pressure is not a waiver.              |
+| "I'll create tickets retroactively"               | "Before writing code" means before. Retroactive tickets cannot shape scope.                       |
+| "The user said 'implement', not 'create tickets'" | CLAUDE.md is a standing instruction. User phrasing does not create exceptions.                    |
+| "The plan file IS the documentation"              | Plans are not tickets. Tickets provide status tracking, board visibility, and audit trail.        |
+| "Tickets would just duplicate the plan"           | Then use `create_plan` with a detailed `description` — that's what the field is for.              |
+| "I'm already 2 hours in / almost done"            | Sunk cost. Stop now, ticket the remaining work. Past violation does not justify future violation. |
+| "User didn't ask for tickets"                     | They asked when they wrote CLAUDE.md. The rule is unconditional.                                  |
+| "I'll do it right next time"                      | This IS next time. The rule applies now.                                                          |
+| "Retroactive tickets are busywork"                | They still serve tracking, communication, and completion criteria. Create them.                   |
+| "Flow state — switching costs"                    | The rule exists precisely to prevent this trap. 30-second interruption, not a context switch.     |
 
 ## Foundational Principle
 
